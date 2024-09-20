@@ -1,4 +1,7 @@
 import HeroSection from "@/components/guest/investment/HeroSection";
+import InvestmentOffers from "@/components/guest/investment/InvestmentOffers";
+import Opportunities from "@/components/guest/investment/Opportunities";
+import OurProcess from "@/components/guest/investment/OurProcess";
 import type { NextPage } from "next";
 import React from 'react'
 
