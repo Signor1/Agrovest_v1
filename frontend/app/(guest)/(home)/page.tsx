@@ -2,6 +2,7 @@ import React from "react";
 import type { NextPage } from "next";
 import HeroSection from "@/components/guest/home/HeroSection";
 import AboutSection from "@/components/guest/home/AboutSection";
+import OurOffers from "@/components/guest/home/OurOffers";
 
 
 const Home: NextPage = () => {
