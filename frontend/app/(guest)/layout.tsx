@@ -1,3 +1,5 @@
+import GuestFooter from "@/components/shared/GuestFooter";
+import GuestHeader from "@/components/shared/GuestHeader";
 
 export default function GuestLayout({
     children,
@@ -7,9 +9,9 @@ export default function GuestLayout({
 
     return (
         <section className="w-full">
-            {/* <Header /> */}
+            <GuestHeader />
             <main className="w-full">{children}</main>
-            {/* <Footer /> */}
+            <GuestFooter />
         </section>
     );
 }
