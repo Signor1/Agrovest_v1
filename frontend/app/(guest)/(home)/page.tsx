@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import HeroSection from "@/components/guest/home/HeroSection";
 import AboutSection from "@/components/guest/home/AboutSection";
 import OurOffers from "@/components/guest/home/OurOffers";
+import OurProcess from "@/components/guest/home/OurProcess";
 
 
 const Home: NextPage = () => {
