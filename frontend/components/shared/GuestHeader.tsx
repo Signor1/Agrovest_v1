@@ -7,6 +7,10 @@ import React, { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { navLinks } from "@/utils/navLinks"
 import logo from "@/public/logo-white.png"
+import { useWalletInfo, useWeb3Modal, useWeb3ModalState } from "@web3modal/wagmi/react"
+import { useAccount, useSwitchChain } from "wagmi"
+import { SUPPORTED_CHAIN_ID } from "@/constants/chain"
+import { WalletConnected } from "./WalletConnected"
 
 const GuestHeader = () => {
     const [showMobileNav, setShowMobileNav] = useState(false)
@@ -20,6 +24,22 @@ const GuestHeader = () => {
             document.body.style.overflow = "unset";
         }
     })
+
+    const { open } = useWeb3Modal()
+    const { address, isConnected } = useAccount()
+    const { walletInfo } = useWalletInfo()
+    const { switchChain } = useSwitchChain()
+
+    const { selectedNetworkId } = useWeb3ModalState()
+
+
+    const walletConnect = () => {
+        if (!isConnected) {
+            open()
+        } else if (isConnected && Number(selectedNetworkId) !== SUPPORTED_CHAIN_ID) {
+            switchChain({ chainId: SUPPORTED_CHAIN_ID })
+        }
+    }
 
     return (
         <header className="w-full overflow-hidden">
@@ -38,9 +58,13 @@ const GuestHeader = () => {
                     <div className="flex items-center justify-end gap-3">
                         <button
                             type="button"
-                            className="text-darkgreen md:px-8 px-6 py-2.5 font-medium text-sm bg-lightgreen rounded-[10px]"
+                            onClick={walletConnect}
+                            className={`text-darkgreen md:px-8 px-6 py-2.5 font-medium text-sm bg-lightgreen rounded-[10px] ${isConnected && Number(selectedNetworkId) !== SUPPORTED_CHAIN_ID && "bg-red-600 text-white"}`}
                         >
-                            Connect Wallet
+                            {
+                                isConnected ? <WalletConnected address={address} icon={walletInfo?.icon} />
+                                    : <span>Connect Wallet</span>
+                            }
                         </button>
 
 
