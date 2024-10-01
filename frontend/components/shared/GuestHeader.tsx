@@ -59,7 +59,7 @@ const GuestHeader = () => {
                         <button
                             type="button"
                             onClick={walletConnect}
-                            className={`text-darkgreen md:px-8 px-6 py-2.5 font-medium text-sm bg-lightgreen rounded-[10px] ${isConnected && Number(selectedNetworkId) !== SUPPORTED_CHAIN_ID && "bg-red-600 text-white"}`}
+                            className={`md:px-8 px-6 py-2.5 font-medium text-sm rounded-[10px] ${isConnected && Number(selectedNetworkId) !== SUPPORTED_CHAIN_ID ? "bg-red-600 text-white" : "bg-lightgreen text-darkgreen"}`}
                         >
                             {
                                 isConnected ? <WalletConnected address={address} icon={walletInfo?.icon} />
