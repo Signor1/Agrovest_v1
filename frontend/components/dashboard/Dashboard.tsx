@@ -1,5 +1,8 @@
 
 import React from 'react'
+import dynamic from "next/dynamic";
+const Barchart = dynamic(() => import('./charts/BarChart'), { ssr: false });
+const Piechart = dynamic(() => import('./charts/PieChart'), { ssr: false });
 
 const UserDashboard = () => {
     return (
@@ -29,8 +32,15 @@ const UserDashboard = () => {
                 </div>
             </main>
 
-            <main className='w-full grid md:grid-cols-2 gap-4'>
-
+            <main className='w-full grid lg:grid-cols-5 md:grid-cols-2 gap-4 my-7'>
+                <div className="lg:col-span-3 flex flex-col bg-gray-100 rounded-[5px] p-4">
+                    <h1 className='uppercase text-gray-800 text-lg font-medium  text-center'>Monthly Reports</h1>
+                    <Barchart />
+                </div>
+                <div className="lg:col-span-2 flex flex-col bg-gray-100 rounded-[5px] p-4">
+                    <h1 className='uppercase text-gray-800 text-lg font-medium  text-center'>Sales Reports</h1>
+                    <Piechart />
+                </div>
             </main>
         </section>
     )
