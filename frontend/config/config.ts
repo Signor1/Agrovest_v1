@@ -12,7 +12,7 @@ const metadata = {
   name: "AgroVest",
   description:
     "Tokenize your business, attract investors, while showcasing your products on a thriving marketplace.",
-  url: "https://localhost:3000", // origin must match your domain & subdomain
+  url: "http://localhost:3000", // origin must match your domain & subdomain
   icons: ["/favicon.ico"],
 };
 

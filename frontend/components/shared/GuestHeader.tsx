@@ -7,9 +7,8 @@ import React, { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { navLinks } from "@/utils/navLinks"
 import logo from "@/public/logo-white.png"
-import { useWalletInfo, useWeb3Modal, useWeb3ModalState } from "@web3modal/wagmi/react"
-import { useAccount, useSwitchChain } from "wagmi"
-import { SUPPORTED_CHAIN_ID } from "@/constants/chain"
+import { useWalletInfo, useWeb3Modal } from "@web3modal/wagmi/react"
+import { useAccount } from "wagmi"
 import { WalletConnected } from "./WalletConnected"
 
 const GuestHeader = () => {
@@ -28,16 +27,11 @@ const GuestHeader = () => {
     const { open } = useWeb3Modal()
     const { address, isConnected } = useAccount()
     const { walletInfo } = useWalletInfo()
-    const { switchChain } = useSwitchChain()
-
-    const { selectedNetworkId } = useWeb3ModalState()
 
 
     const walletConnect = () => {
         if (!isConnected) {
             open()
-        } else if (isConnected && Number(selectedNetworkId) !== SUPPORTED_CHAIN_ID) {
-            switchChain({ chainId: SUPPORTED_CHAIN_ID })
         }
     }
 
@@ -59,7 +53,7 @@ const GuestHeader = () => {
                         <button
                             type="button"
                             onClick={walletConnect}
-                            className={`md:px-8 px-6 py-2.5 font-medium text-sm rounded-[10px] ${isConnected && Number(selectedNetworkId) !== SUPPORTED_CHAIN_ID ? "bg-red-600 text-white" : "bg-lightgreen text-darkgreen"}`}
+                            className={`md:px-8 px-6 py-2.5 font-medium text-sm rounded-[10px] bg-lightgreen text-darkgreen`}
                         >
                             {
                                 isConnected ? <WalletConnected address={address} icon={walletInfo?.icon} />
