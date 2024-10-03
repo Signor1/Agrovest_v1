@@ -1,11 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+'use client'
 import Image from 'next/image'
 import React, { FormEvent, useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure } from "@nextui-org/react";
+import { farmData } from '@/utils/products';
+import { useRouter } from 'next/navigation';
 
 const ExploreUserFarm = () => {
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+    const router = useRouter();
 
 
     // Uplaod to IPFS and return of the URI
@@ -35,27 +40,21 @@ const ExploreUserFarm = () => {
             </div>
 
             <div className='w-full grid md:grid-cols-2 gap-8'>
-                <div className='bg-gray-100 rounded-[10px] p-4 shadow-lg flex flex-col items-end gap-2'>
-                    <div className='w-full h-[200px]'>
-                        <Image src={`https://res.cloudinary.com/dad1drjht/image/upload/v1725027529/hv0dkqebklrenv7aeoye.png`} alt='farm produce' width={2480} height={1360} quality={100} priority className='w-full h-full object-cover' />
-                    </div>
-                    <div className="flex w-full justify-between items-center">
-                        <h4 className='text-base font-semibold text-left text-gray-700'>Ashers Fishery Farm</h4>
-                    </div>
-                    <p className='text-sm text-gray-500'>A premium fishery farm offering investment opportunities in aquaculture, allowing investors to participate in the growing fish farming industry.</p>
-                    <button className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[7px] text-base mt-3">View more</button>
-                </div>
+                {
+                    farmData.map((res, index) => (
+                        <div key={index} className='bg-gray-100 rounded-[10px] p-4 shadow-lg flex flex-col items-end gap-2'>
+                            <div className='w-full h-[200px]'>
+                                <Image src={res.imageUrl} alt={res.altText} width={2480} height={1360} quality={100} priority className='w-full h-full object-cover' />
+                            </div>
+                            <div className="flex w-full justify-between items-center">
+                                <h4 className='text-base font-semibold text-left text-gray-700'>{res.name}</h4>
+                            </div>
+                            <p className='text-sm text-gray-500'>{res.description}</p>
+                            <button className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[7px] text-base mt-3" onClick={() => router.push(`/user/explore/${res.id}`)}>View more</button>
+                        </div>
+                    ))
+                }
 
-                <div className='bg-gray-100 rounded-[10px] p-4 shadow-lg flex flex-col items-end gap-2'>
-                    <div className='w-full h-[200px]'>
-                        <Image src={`https://res.cloudinary.com/dad1drjht/image/upload/v1725027532/wr1rkyiv3npb2gy0wjyl.png`} alt='farm produce' width={2480} height={1360} quality={100} priority className='w-full h-full object-cover' />
-                    </div>
-                    <div className="flex w-full justify-between items-center">
-                        <h4 className='text-base font-semibold text-left text-gray-700'>Butch Lane</h4>
-                    </div>
-                    <p className='text-sm text-gray-500'>A promising investment venture focused on livestock farming, providing a chance for investors to support and benefit from sustainable meat production.</p>
-                    <button className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[7px] text-base mt-3">View more</button>
-                </div>
             </div>
 
 
@@ -63,11 +62,11 @@ const ExploreUserFarm = () => {
                 <ModalContent >
                     {() => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1 text-gray-800 capitalize">Add your product</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1 text-gray-800 capitalize">Add your Farm</ModalHeader>
                             <ModalBody className="flex flex-col gap-4">
                                 <form className="w-full grid gap-4" onSubmit={handleSubmit}>
                                     <div className="w-full flex flex-col items-center">
-                                        <div className="w-[80px] h-[80px] border-[0.5px] border-lightgreen/50 rounded relative ">
+                                        <div className="w-[80px] h-[80px] border-[0.5px] border-darkgreen rounded relative ">
                                             {selectedFile ? (
                                                 <Image
                                                     src={URL.createObjectURL(selectedFile)}
@@ -79,7 +78,7 @@ const ExploreUserFarm = () => {
                                                     quality={100}
                                                 />
                                             ) : (
-                                                <span className="relative flex justify-center items-center w-full h-full">
+                                                <span className="relative flex justify-center items-center w-full h-full text-darkgreen">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 relative text-6xl inline-flex rounded text-gray-300">
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z" />
@@ -97,7 +96,7 @@ const ExploreUserFarm = () => {
                                             />
                                             <label
                                                 htmlFor="selectFile"
-                                                className=" absolute -right-1 p-1 rounded-full -bottom-1 cursor-pointer bg-gray-100 border-[0.5px] border-color3/50 font-Bebas tracking-wider text-color3"
+                                                className=" absolute -right-1 p-1 rounded-full -bottom-1 cursor-pointer bg-darkgreen border-[0.5px] border-gray-700/50 font-Bebas tracking-wider text-gray-200"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
@@ -108,16 +107,16 @@ const ExploreUserFarm = () => {
                                     <div className="flex flex-col">
                                         <label
                                             htmlFor="productName"
-                                            className="text-gray-800 font-medium ml-1"
+                                            className="text-gray-700 font-medium ml-1"
                                         >
-                                            Product Name
+                                            Farm Name
                                         </label>
                                         <input
                                             type="text"
                                             name="productName"
                                             id="productName"
                                             placeholder="Enter product name"
-                                            className="w-full caret-color1 py-3 px-4 outline-none rounded-lg border border-color1 text-sm bg-color1/5 text-color3"
+                                            className="w-full caret-color1 py-3 px-4 outline-none rounded-lg border border-color1 text-sm bg-color1/5 text-gray-700"
                                             value={productName}
                                             onChange={(e) => setProductName(e.target.value)}
                                             required
@@ -126,16 +125,16 @@ const ExploreUserFarm = () => {
                                     <div className="flex flex-col">
                                         <label
                                             htmlFor="productImg"
-                                            className="text-color3 font-medium ml-1"
+                                            className="text-gray-700 font-medium ml-1"
                                         >
-                                            Product Image URI
+                                            Farm Image URI
                                         </label>
                                         <input
                                             type="text"
                                             name="productImg"
                                             id="productImg"
                                             placeholder="Product Image URI"
-                                            className="w-full caret-color1 py-3 px-4 outline-none rounded-lg border border-color1 text-sm bg-color1/5 text-color3"
+                                            className="w-full caret-color1 py-3 px-4 outline-none rounded-lg border border-color1 text-sm bg-color1/5 text-gray-700"
                                             value={productImage}
                                             onChange={(e: any) => setProductImage(e.target.value)}
                                             readOnly
@@ -145,16 +144,16 @@ const ExploreUserFarm = () => {
                                     <div className="flex flex-col">
                                         <label
                                             htmlFor="productDesc"
-                                            className="text-color3 font-medium ml-1"
+                                            className="text-gray-700 font-medium ml-1"
                                         >
-                                            Product Description
+                                            Farm Description
                                         </label>
                                         <input
                                             type="text"
                                             name="productDesc"
                                             id="productDesc"
                                             placeholder="Enter product description"
-                                            className="w-full caret-color1 py-3 px-4 outline-none rounded-lg border border-color1 text-sm bg-color1/5 text-color3"
+                                            className="w-full caret-color1 py-3 px-4 outline-none rounded-lg border border-color1 text-sm bg-color1/5 text-gray-700"
                                             value={productDesc}
                                             onChange={(e) => setProductDesc(e.target.value)}
                                             required
@@ -163,7 +162,7 @@ const ExploreUserFarm = () => {
                                     <div className="flex flex-col">
                                         <label
                                             htmlFor="productPrice"
-                                            className="text-color3 font-medium ml-1"
+                                            className="text-gray-700 font-medium ml-1"
                                         >
                                             Product Price
                                         </label>
@@ -172,7 +171,7 @@ const ExploreUserFarm = () => {
                                             name="productPrice"
                                             id="productPrice"
                                             placeholder="Enter product price"
-                                            className="w-full caret-color1 py-3 px-4 outline-none rounded-lg border border-color1 text-sm bg-color1/5 text-color3"
+                                            className="w-full caret-color1 py-3 px-4 outline-none rounded-lg border border-color1 text-sm bg-color1/5 text-gray-700"
                                             value={productPrice}
                                             onChange={(e) => setProductPrice(e.target.value)}
                                         />

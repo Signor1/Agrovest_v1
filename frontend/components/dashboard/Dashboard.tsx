@@ -3,6 +3,15 @@ import React from 'react'
 import dynamic from "next/dynamic";
 const Barchart = dynamic(() => import('./charts/BarChart'), { ssr: false });
 const Piechart = dynamic(() => import('./charts/PieChart'), { ssr: false });
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+import { farmInvestments } from '@/utils/products';
 
 const UserDashboard = () => {
     return (
@@ -42,8 +51,40 @@ const UserDashboard = () => {
                     <Piechart />
                 </div>
             </main>
+
+            {/* table  */}
+            <main className='w-full bg-gray-100 rounded-[5px] p-4 flex flex-col gap-4'>
+                <h2 className='text-gray-700 text-lg font-medium uppercase text-center'>Recent Business</h2>
+                <Table>
+                    <TableHeader>
+                        <TableRow className='text-gray-800'>
+                            <TableHead className="text-start">Farm Name</TableHead>
+                            <TableHead>Fund&apos;s Target</TableHead>
+                            <TableHead>Investors</TableHead>
+                            <TableHead>Amount Raised</TableHead>
+                            <TableHead>Balance</TableHead>
+                            <TableHead className="text-center">Status</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {
+                            farmInvestments.slice(0, 3).map((farm, index) => (
+                                <TableRow key={index} className='text-gray-600'>
+                                    <TableCell className="font-medium text-start">{farm.farmName}</TableCell>
+                                    <TableCell>{farm.fundsTarget}</TableCell>
+                                    <TableCell>{farm.investors}</TableCell>
+                                    <TableCell>{farm.amountRaised}</TableCell>
+                                    <TableCell>{farm.balance}</TableCell>
+                                    <TableCell className="text-center">{farm.status}</TableCell>
+                                </TableRow>
+                            ))
+                        }
+                    </TableBody>
+                </Table>
+            </main>
         </section>
     )
 }
 
 export default UserDashboard
+
