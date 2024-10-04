@@ -148,7 +148,29 @@ export const farmInvestments: FarmType[] = [
   },
 ];
 
-export const farmData = [
+export type FarmDataType = {
+  id: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+  altText: string;
+  address: string;
+  phoneNumber: string;
+  email: string;
+  fundsTarget: string;
+  amountRaised: string;
+  investors: number;
+  fundingDetails: {
+    farmName: string;
+    fundsTarget: string;
+    investors: number;
+    amountRaised: string;
+    balance: string;
+    status: string;
+  }[];
+};
+
+export const farmData: FarmDataType[] = [
   {
     id: 1,
     name: "Ashers Fishery Farm",
