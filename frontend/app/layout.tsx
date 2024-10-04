@@ -4,6 +4,10 @@ import { cn } from "@/lib/utils";
 import { Providers } from "./providers";
 import { Toaster } from "sonner";
 import { getMetadata } from "@/utils/getMetadata";
+import { headers } from 'next/headers'
+import { cookieToInitialState } from 'wagmi'
+import Web3ModalProvider from '@/context'
+import { config } from "@/config/config";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,6 +24,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const initialState = cookieToInitialState(config, headers().get('cookie'))
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -28,10 +35,12 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <Providers>
-          {children}
-        </Providers>
-        <Toaster richColors />
+        <Web3ModalProvider initialState={initialState}>
+          <Providers>
+            {children}
+          </Providers>
+          <Toaster richColors />
+        </Web3ModalProvider>
       </body>
     </html>
   );

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 
-const UserPortfolio = () => {
+const Investments = () => {
     const path = usePathname()
     const router = useRouter();
 
@@ -44,7 +44,7 @@ const UserPortfolio = () => {
 
             <div className='w-full grid md:grid-cols-2 gap-8'>
                 {
-                    farmData.slice(0, 1).map((res, index) => (
+                    farmData.slice(1, 2).map((res, index) => (
                         <div key={index} className='bg-gray-100 rounded-[10px] p-4 shadow-lg flex flex-col items-end gap-2'>
                             <div className='w-full h-[200px]'>
                                 <Image src={res.imageUrl} alt={res.altText} width={2480} height={1360} quality={100} priority className='w-full h-full object-cover' />
@@ -53,7 +53,10 @@ const UserPortfolio = () => {
                                 <h4 className='text-base font-semibold text-left text-gray-700'>{res.name}</h4>
                             </div>
                             <p className='text-sm text-gray-500'>{res.description}</p>
-                            <button className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[7px] text-base mt-3" onClick={() => router.push(`/user/portfolio/${res.id}`)}>View more</button>
+                            <div className='flex w-full justify-between items-center'>
+                                <p className='text-xl font-semibold text-gray-700'>{res.amountRaised}</p>
+                                <button className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[7px] text-base mt-3" onClick={() => router.push(`/user/portfolio/${res.id}`)}>View more</button>
+                            </div>
                         </div>
                     ))
                 }
@@ -64,4 +67,4 @@ const UserPortfolio = () => {
     )
 }
 
-export default UserPortfolio
+export default Investments

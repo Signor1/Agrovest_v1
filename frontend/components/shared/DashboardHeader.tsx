@@ -3,6 +3,9 @@ import Logo from './Logo';
 import logo from "@/public/logo-green.png";
 import Greeting from './Greeting';
 import Link from 'next/link';
+import { useWalletInfo, useWeb3Modal } from '@web3modal/wagmi/react';
+import { useAccount } from 'wagmi';
+import { WalletConnected } from './WalletConnected';
 const DashboardHeader = (
     {
         sidebarOpen,
@@ -12,6 +15,16 @@ const DashboardHeader = (
         setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
     }
 ) => {
+
+    const { open } = useWeb3Modal()
+    const { isConnected, address } = useAccount()
+    const { walletInfo } = useWalletInfo()
+
+    const walletConnect = () => {
+        if (!isConnected) {
+            open()
+        }
+    }
 
 
     return (
@@ -66,22 +79,27 @@ const DashboardHeader = (
 
                 <div className="flex items-center gap-3 2xsm:gap-7">
 
+                    {/* <!-- User Area --> */}
+                    <button
+                        type="button"
+                        onClick={walletConnect}
+                        className={`transition-all duration-200 bg-darkgreen text-lightgreen px-4 py-2.5 rounded-[7px] text-sm flex items-center gap-1`}
+                    >
+                        {
+                            isConnected ? <WalletConnected address={address} icon={walletInfo?.icon} />
+                                : <span>Connect Wallet</span>
+                        }
+                    </button>
+
+
+                    {/* <!-- User Area --> */}
+
                     <Link href={`/user/cart`} className='text-darkgreen py-1.5 px-3 bg-lightgreen rounded'>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                         </svg>
                     </Link>
 
-                    {/* <!-- User Area --> */}
-                    <button
-                        type="button"
-                        className={`transition-all duration-200 bg-darkgreen text-lightgreen px-4 py-2.5 rounded-[7px] text-sm flex items-center gap-1`}
-                    >
-                        Connect Wallet
-                    </button>
-
-
-                    {/* <!-- User Area --> */}
                 </div>
             </div>
         </header>

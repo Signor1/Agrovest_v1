@@ -1,13 +1,13 @@
 'use client'
-import { farmData } from '@/utils/products'
+import { farmProducts, ProductType } from '@/utils/products'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import React from 'react'
 
-const UserPortfolio = () => {
+const Products = () => {
     const path = usePathname()
-    const router = useRouter();
+    // const router = useRouter();
 
     return (
         <section className="w-full flex flex-col gap-6 py-4">
@@ -42,18 +42,19 @@ const UserPortfolio = () => {
                 <Link href="/user/portfolio/products" className={`text-base font-medium py-2 px-4  ${path === '/user/portfolio/products' ? 'bg-darkgreen text-gray-200' : 'text-darkgreen bg-lightgreen'}`}>Products</Link>
             </div>
 
-            <div className='w-full grid md:grid-cols-2 gap-8'>
+            <div className='w-full grid lg:grid-cols-3 md:grid-cols-2 gap-6'>
                 {
-                    farmData.slice(0, 1).map((res, index) => (
-                        <div key={index} className='bg-gray-100 rounded-[10px] p-4 shadow-lg flex flex-col items-end gap-2'>
-                            <div className='w-full h-[200px]'>
-                                <Image src={res.imageUrl} alt={res.altText} width={2480} height={1360} quality={100} priority className='w-full h-full object-cover' />
+                    farmProducts.map((product: ProductType, index: number): JSX.Element => (
+                        <div key={index} className='bg-gray-100 rounded-[10px] p-4 shadow-lg flex flex-col gap-2'>
+                            <div className='w-full h-[150px]'>
+                                <Image src={product.image} alt='farm produce' width={300} height={217} quality={100} priority className='w-full h-full object-cover' />
                             </div>
                             <div className="flex w-full justify-between items-center">
-                                <h4 className='text-base font-semibold text-left text-gray-700'>{res.name}</h4>
+                                <h4 className='text-base font-semibold text-gray-700'>{product.name}</h4>
+                                <p className='text-gray-700'>{product.priceInEth} <span className="font-semibold">ETH</span></p>
                             </div>
-                            <p className='text-sm text-gray-500'>{res.description}</p>
-                            <button className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[7px] text-base mt-3" onClick={() => router.push(`/user/portfolio/${res.id}`)}>View more</button>
+                            <p className='text-sm text-gray-500'>{product.description}</p>
+                            <button className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[10px] text-base">Add to cart</button>
                         </div>
                     ))
                 }
@@ -64,4 +65,4 @@ const UserPortfolio = () => {
     )
 }
 
-export default UserPortfolio
+export default Products
