@@ -55,6 +55,7 @@ const Investments = () => {
                             <p className='text-sm text-gray-500'>{res.description}</p>
                             <div className='flex w-full justify-between items-center'>
                                 <p className='text-xl font-semibold text-gray-700'>{res.amountRaised}</p>
+                                {/* add dyanmic route for investments */}
                                 <button className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[7px] text-base mt-3" onClick={() => router.push(`/user/portfolio/${res.id}`)}>View more</button>
                             </div>
                         </div>
