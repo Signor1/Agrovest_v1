@@ -5,16 +5,16 @@ type NavLink = {
 
 export const navLinks: NavLink[] = [
   {
+    name: "Home",
+    href: "/",
+  },
+  {
     name: "Market Place",
     href: "/marketplace",
   },
   {
     name: "Investment",
     href: "/investment",
-  },
-  {
-    name: "Explore",
-    href: "/explore",
   },
 ];
 
