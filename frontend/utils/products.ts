@@ -1,4 +1,5 @@
 export type ProductType = {
+  id: number;
   name: string;
   priceInEth: number;
   image: string;
@@ -16,6 +17,7 @@ export type FarmType = {
 
 export const farmProducts: ProductType[] = [
   {
+    id: 1,
     name: "Cassava",
     priceInEth: 0.02,
     image:
@@ -24,6 +26,7 @@ export const farmProducts: ProductType[] = [
       "A versatile root vegetable that is a staple food in many African countries. Used to make products like garri and fufu.",
   },
   {
+    id: 2,
     name: "Coco Yam",
     priceInEth: 0.03,
     image:
@@ -32,6 +35,7 @@ export const farmProducts: ProductType[] = [
       "A tuber crop that is widely consumed in Africa, especially in West Africa, often boiled, fried, or pounded into fufu.",
   },
   {
+    id: 3,
     name: "Maize",
     priceInEth: 0.015,
     image:
@@ -40,6 +44,7 @@ export const farmProducts: ProductType[] = [
       "A staple cereal grain that is used in various forms, including cornmeal, flour, and as a vegetable.",
   },
   {
+    id: 4,
     name: "Plantain",
     priceInEth: 0.025,
     image:
@@ -48,6 +53,7 @@ export const farmProducts: ProductType[] = [
       "A starchy banana variety that is commonly fried, boiled, or roasted in many African dishes.",
   },
   {
+    id: 5,
     name: "Groundnuts",
     priceInEth: 0.01,
     image:
@@ -56,6 +62,7 @@ export const farmProducts: ProductType[] = [
       "Also known as peanuts, groundnuts are widely grown in Africa and used for making oil, snacks, and sauces.",
   },
   {
+    id: 6,
     name: "Palm Oil",
     priceInEth: 0.04,
     image:

@@ -1,13 +1,13 @@
 import React from "react"
 import type { NextPage } from "next"
-import MyCarts from "@/components/dashboard/MyCarts"
+import PurchasedItems from "@/components/dashboard/PurchasedItems"
 
-const Transactions: NextPage = () => {
+const Purchased: NextPage = () => {
     return (
         <main className="w-full flex flex-col overflow-x-hidden">
-            <MyCarts />
+            <PurchasedItems />
         </main>
     )
 }
 
-export default Transactions
+export default Purchased
