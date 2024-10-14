@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@coinbase/onchainkit": "^0.33.6",
     "@nextui-org/react": "^2.4.8",
     "@tanstack/react-query": "^5.51.9",
     "@tanstack/react-table": "^8.17.3",

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
-import "../Library/Error.sol";
-import "../Library/Event.sol";
+import "./Library/Error.sol";
+import "./Library/Event.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "../Interfaces/IFarmEscrow.sol";
+import "./Interfaces/IFarmEscrow.sol";
 
 contract Farm {
     IERC20 public token;

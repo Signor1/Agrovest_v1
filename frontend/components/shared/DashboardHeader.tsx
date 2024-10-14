@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useWalletInfo, useWeb3Modal } from '@web3modal/wagmi/react';
 import { useAccount } from 'wagmi';
 import { WalletConnected } from './WalletConnected';
+import { DashboardWalletComponents } from '../dashboard/DahboardWalletComponent';
 const DashboardHeader = (
     {
         sidebarOpen,
@@ -16,19 +17,19 @@ const DashboardHeader = (
     }
 ) => {
 
-    const { open } = useWeb3Modal()
-    const { isConnected, address } = useAccount()
-    const { walletInfo } = useWalletInfo()
+    // const { open } = useWeb3Modal()
+    // const { isConnected, address } = useAccount()
+    // const { walletInfo } = useWalletInfo()
 
-    const walletConnect = () => {
-        if (!isConnected) {
-            open()
-        }
-    }
+    // const walletConnect = () => {
+    //     if (!isConnected) {
+    //         open()
+    //     }
+    // }
 
 
     return (
-        <header className="sticky top-0 z-[99] flex w-full bg-white overflow-hidden drop-shadow-1">
+        <header className="sticky top-0 z-[99] flex w-full bg-white drop-shadow-1">
             <div className="flex flex-grow items-center justify-between py-4 px-8 shadow md:px-2 2xl:px-11">
                 <div className="flex items-center gap-3 sm:gap-4 lg:hidden">
                     {/* <!-- Hamburger Toggle BTN --> */}
@@ -80,7 +81,7 @@ const DashboardHeader = (
                 <div className="flex items-center gap-3 2xsm:gap-7">
 
                     {/* <!-- User Area --> */}
-                    <button
+                    {/* <button
                         type="button"
                         onClick={walletConnect}
                         className={`transition-all duration-200 bg-darkgreen text-lightgreen px-4 py-2.5 rounded-[7px] text-sm flex items-center gap-1`}
@@ -89,9 +90,9 @@ const DashboardHeader = (
                             isConnected ? <WalletConnected address={address} icon={walletInfo?.icon} />
                                 : <span>Connect Wallet</span>
                         }
-                    </button>
+                    </button> */}
 
-
+                        <DashboardWalletComponents />
                     {/* <!-- User Area --> */}
 
                     <Link href={`/user/transactions`} className='text-darkgreen py-1.5 px-3 bg-lightgreen rounded'>

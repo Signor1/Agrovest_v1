@@ -8,9 +8,8 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 
 contract Token is ERC20, Ownable, ERC20Permit {
     constructor(
-        address initialOwner
-    ) ERC20("Test", "TTT") Ownable(initialOwner) ERC20Permit("Test") {
-        _mint(initialOwner, 10000000 * 10 ** decimals());
+    ) ERC20("AgroVestToken", "AVT") Ownable(msg.sender) ERC20Permit("AVT") {
+        _mint(msg.sender, 10000000 * 10 ** decimals());
     }
 
     function mint(address to, uint256 amount) public onlyOwner {

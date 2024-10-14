@@ -1,13 +1,13 @@
 import { Montserrat as FontSans } from "next/font/google";
+import "@coinbase/onchainkit/styles.css";
 import "../styles/globals.css";
 import { cn } from "@/lib/utils";
 import { Providers } from "./providers";
 import { Toaster } from "sonner";
 import { getMetadata } from "@/utils/getMetadata";
-import { headers } from 'next/headers'
-import { cookieToInitialState } from 'wagmi'
-import Web3ModalProvider from '@/context'
-import { config } from "@/config/config";
+import { headers } from "next/headers";
+import { cookieToInitialState } from "wagmi";
+import { getConfig } from "@/config/config";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -16,7 +16,8 @@ const fontSans = FontSans({
 
 export const metadata = getMetadata({
   title: "AgroVest",
-  description: "Tokenize your business, attract investors, while showcasing your products on a thriving marketplace. ",
+  description:
+    "Tokenize your business, attract investors, while showcasing your products on a thriving marketplace. ",
 });
 
 export default function RootLayout({
@@ -24,23 +25,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  const initialState = cookieToInitialState(config, headers().get('cookie'))
-
+  const initialState = cookieToInitialState(
+    getConfig(),
+    headers().get('cookie')
+  );
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={cn(
-          "min-h-screen antialiased bg-white",
-          fontSans.variable
-        )}
+        className={cn("min-h-screen antialiased bg-white", fontSans.variable)}
       >
-        <Web3ModalProvider initialState={initialState}>
-          <Providers>
-            {children}
-          </Providers>
+        <Providers initialState={initialState}>
+          {children}
           <Toaster richColors />
-        </Web3ModalProvider>
+        </Providers>
       </body>
     </html>
   );
