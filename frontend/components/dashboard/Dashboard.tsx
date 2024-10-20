@@ -11,14 +11,21 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { farmInvestments } from '@/utils/products';
-import useGetAllFarmProducts from '@/hooks/useGetAllFarmProducts';
-import useGetAllFarms from '@/hooks/useGetAllFarms';
-import useGetAllInvestors from '@/hooks/useGetAllInvestors';
+import useGetAllFarmProducts from '@/hooks/ReadHooks/useGetAllFarmProducts';
+import useGetAllFarms from '@/hooks/ReadHooks/useGetAllFarms';
+import useGetAllInvestors from '@/hooks/ReadHooks/useGetAllInvestors';
+import { formatEther } from 'viem';
+import useGetTotalSales from '@/hooks/ReadHooks/useGetTotalSales';
+import useGetTotalInvestment from '@/hooks/ReadHooks/useGetTotalInvestment';
+import useGetAllAvailableInvestment from '@/hooks/ReadHooks/useGetAllAvailableInvestment';
 
 const UserDashboard = () => {
     const {data: products} = useGetAllFarmProducts();
-    const {data: farms} = useGetAllFarms()
+    const {data: farms} = useGetAllFarms();
+    const {data: investors} = useGetAllInvestors();
+    const {data: totalSales} = useGetTotalSales();
+    const {data: totalInvestment} = useGetTotalInvestment();
+    const {data: availableInvestment} = useGetAllAvailableInvestment();
    
     return (
         <section className="w-full flex flex-col gap-6 py-4">
@@ -31,11 +38,11 @@ const UserDashboard = () => {
                 </div>
                 <div className="bg-gray-100 rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
                     <h4 className='text-gray-800 font-light'>Total Investors</h4>
-                    <h1 className="text-2xl text-darkgreen font-semibold">0</h1>
+                    <h1 className="text-2xl text-darkgreen font-semibold">{investors?.length}</h1>
                 </div>
                 <div className="bg-gray-100 rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
                     <h4 className='text-gray-800 font-light'>Total Investments</h4>
-                    <h1 className="text-2xl text-darkgreen font-semibold">0 ETH</h1>
+                    <h1 className="text-2xl text-darkgreen font-semibold">{totalInvestment ? formatEther(totalInvestment) : '0'} ETH</h1>
                 </div>
                 <div className="bg-gray-100 rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
                     <h4 className='text-gray-800 font-light'>Total Products</h4>
@@ -43,11 +50,11 @@ const UserDashboard = () => {
                 </div>
                 <div className="bg-gray-100 rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
                     <h4 className='text-gray-800 font-light'>Total Sales</h4>
-                    <h1 className="text-2xl text-darkgreen font-semibold">0 ETH</h1>
+                    <h1 className="text-2xl text-darkgreen font-semibold">{totalSales ? formatEther(totalSales) : '0'} ETH</h1>
                 </div>
             </main>
 
-            <main className='w-full grid lg:grid-cols-5 md:grid-cols-2 gap-4 my-7'>
+            {/* <main className='w-full grid lg:grid-cols-5 md:grid-cols-2 gap-4 my-7'>
                 <div className="lg:col-span-3 flex flex-col bg-gray-100 rounded-[5px] p-4">
                     <h1 className='uppercase text-gray-800 text-lg font-medium  text-center'>Monthly Reports</h1>
                     <Barchart />
@@ -56,7 +63,7 @@ const UserDashboard = () => {
                     <h1 className='uppercase text-gray-800 text-lg font-medium  text-center'>Sales Reports</h1>
                     <Piechart />
                 </div>
-            </main>
+            </main> */}
 
             {/* table  */}
             <main className='w-full bg-gray-100 rounded-[5px] p-4 flex flex-col gap-4'>
@@ -74,14 +81,14 @@ const UserDashboard = () => {
                     </TableHeader>
                     <TableBody>
                         {
-                            farmInvestments.slice(0, 3).map((farm, index) => (
+                            availableInvestment?.slice(0, 3).map((farm: any, index: number) => (
                                 <TableRow key={index} className='text-gray-600'>
-                                    <TableCell className="font-medium text-start">{farm.farmName}</TableCell>
-                                    <TableCell>{farm.fundsTarget}</TableCell>
-                                    <TableCell>{farm.investors}</TableCell>
+                                    <TableCell className="font-medium text-start">{farm.name}</TableCell>
+                                    <TableCell>{farm.minAmount}</TableCell>
+                                    <TableCell>{farm.farmInvestorCount}</TableCell>
                                     <TableCell>{farm.amountRaised}</TableCell>
-                                    <TableCell>{farm.balance}</TableCell>
-                                    <TableCell className="text-center">{farm.status}</TableCell>
+                                    <TableCell>{farm.minAmount - farm.amountRaised}</TableCell>
+                                    <TableCell className="text-center">{(farm.minAmount - farm.amountRaised ) > 0 ? "Ongoing": "Ended"}</TableCell>
                                 </TableRow>
                             ))
                         }

@@ -8,6 +8,7 @@ import "./Interfaces/IFarmEscrow.sol";
 contract Farm {
     IERC20 public token;
     IFarmEscrow public escrow;
+    uint256 farmCounter;
 
     mapping(address => string) public business_name;
     mapping(string => address) public nameToAddress;
@@ -16,6 +17,7 @@ contract Farm {
     mapping(uint256 => address[]) public productBuyers;
 
     struct Farmer {
+        uint256 farm_id;
         string business_name;
         string business_image;
         string business_location;
@@ -34,6 +36,7 @@ contract Farm {
         uint256 product_price;
         address product_owner;
         uint256 product_id;
+        bool sold;
     }
 
     mapping(uint256 => Review[]) public productReviews;
@@ -50,6 +53,8 @@ contract Farm {
     mapping(address => FarmProducts[]) cartProducts;
 
     mapping(address => Farmer) details;
+
+    uint256 totalSales;
 
     constructor(address _tokenAddress, address _escrowAddress) {
         token = IERC20(_tokenAddress);
@@ -76,6 +81,7 @@ contract Farm {
         nameToAddress[_name] = msg.sender;
         business_image[msg.sender] = _image;
         details[msg.sender] = Farmer(
+            farmCounter,
             _name,
             _image,
             _location,
@@ -87,6 +93,7 @@ contract Farm {
         farms.push(details[msg.sender]);
         emit Event.BusinessNameRegistered(msg.sender, _name);
         emit Event.BusinessImageRegistered(msg.sender, _image);
+        farmCounter ++;
     }
 
     function updateDetails(
@@ -153,7 +160,8 @@ contract Farm {
             _productDescription,
             _productPrice,
             msg.sender,
-            _productId
+            _productId,
+            false
         );
         farmProducts[msg.sender].push(newProduct);
 
@@ -217,7 +225,8 @@ contract Farm {
                         farmProducts[farmer][j].product_description,
                         farmProducts[farmer][j].product_price,
                         farmProducts[farmer][j].product_owner,
-                        farmProducts[farmer][j].product_id
+                        farmProducts[farmer][j].product_id,
+                        farmProducts[farmer][j].sold
                     );
                     cartProducts[msg.sender].push(newProduct);
                     break;
@@ -248,7 +257,7 @@ contract Farm {
         }
     }
 
-    function purchaseProduct(uint256 _productId) public {
+    function purchaseProduct(uint256 _productId) public payable{
         FarmProducts memory product;
         bool productFound = false;
         address productOwner;
@@ -272,39 +281,26 @@ contract Farm {
             revert Error.ProductDoesNotExist();
         }
 
-        uint256 allowance = token.allowance(msg.sender, address(this));
-        if (allowance < product.product_price) {
-            revert Error.InsufficientAllowance();
-        }
-        // uint256[] productIds;
-        // uint256[] amounts;
+        // uint256 allowance = token.allowance(msg.sender, address(this));
+        // if (allowance < product.product_price) {
+        //     revert Error.InsufficientAllowance();
+        // }
 
-        // // Create arrays for product IDs and amounts
-        // uint256;
-        // productIds[0] = _productId;
-        // uint256;
-        // amounts[0] = product.product_price;
-
-        // // Call createEscrow function
-        escrow.createEscrow(productOwner, _productId, product.product_price);
-
-        bool success = token.transferFrom(
-            msg.sender,
-            address(escrow),
-            product.product_price
-        );
-        if (!success) {
-            revert Error.TransferFailed();
+        if (msg.value != product.product_price) {
+        revert Error.InsufficientAllowance();
         }
 
-        // productBuyers[_productId].push(msg.sender);
-        // purchases[msg.sender][_productId] = true;
+        productBuyers[_productId].push(msg.sender);
 
-        // purchasedProducts[msg.sender].push(product);
+        purchases[msg.sender][_productId] = true;
+
+        purchasedProducts[msg.sender].push(product);
 
         removeProductFromCart(_productId);
 
-        emit Event.EscrowCreated(msg.sender, _productId);
+        totalSales += msg.value;
+
+        payable(productOwner).transfer(msg.value);
     }
 
     function getPurchasedProducts(
@@ -374,5 +370,9 @@ contract Farm {
 
     function retrunFarms() external view returns (Farmer[] memory) {
         return farms;
+    }
+
+    function getTotalSale() external view returns (uint){
+        return totalSales;
     }
 }

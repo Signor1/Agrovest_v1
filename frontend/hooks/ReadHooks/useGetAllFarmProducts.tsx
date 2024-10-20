@@ -1,5 +1,5 @@
 import { useReadContract } from 'wagmi'
-import farmAbi from '../abis/farm.json'
+import farmAbi from '../../abis/farm.json'
 import { getAddress } from 'viem';
 
 

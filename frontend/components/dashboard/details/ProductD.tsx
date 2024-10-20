@@ -1,5 +1,4 @@
 "use client";
-import { farmProducts, ProductType } from "@/utils/products";
 import Image from "next/image";
 import React, { FormEvent, useMemo, useState } from "react";
 import {
@@ -12,15 +11,17 @@ import {
 } from "@nextui-org/react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import avatar from "@/public/avatar.png";
-// import { reviews } from "@/utils/reviews";
-import useGetAllFarmProducts from "@/hooks/useGetAllFarmProducts";
+import useGetAllFarmProducts from "@/hooks/ReadHooks/useGetAllFarmProducts";
 import { formatEther } from "viem";
-import useGetProductReview from "@/hooks/useGetProductReview";
+import useGetProductReview from "@/hooks/ReadHooks/useGetProductReview";
+import { toast } from "sonner";
+import useAddProductToCart from "@/hooks/WriteHooks/useAddProductToCart";
 
 const ProductD = ({ id }: { id: string }) => {
     // Hook calls
   const { data: products } = useGetAllFarmProducts();
   const { data: reviews } = useGetProductReview(Number(id))
+  const addProductToCart = useAddProductToCart()
 
   const [currentData, setCurrentData] = useState<any>([]);
 
@@ -50,6 +51,20 @@ const ProductD = ({ id }: { id: string }) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
   };
+
+  const handleAddToCart = async() =>{
+    toast.loading("Adding item to cart");
+    try {
+      await addProductToCart(Number(id))
+      toast.dismiss();
+      toast.success("Product added to cart successfully!");
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Error adding product to cart. Please try again.");
+      console.error(err);
+    }
+  }
+
   return (
     <section className="w-full flex flex-col gap-6 py-4">
       <h1 className="uppercase text-darkgreen font-semibold text-base md:text-xl">
@@ -110,6 +125,7 @@ const ProductD = ({ id }: { id: string }) => {
           <Button
             type="button"
             className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[7px] text-base mt-3"
+            onClick={()=>handleAddToCart()}
           >
             Add to cart
           </Button>
