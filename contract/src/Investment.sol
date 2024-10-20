@@ -116,7 +116,7 @@ contract Investment {
     function investEthers(uint256 _farmId) external payable {
         require(msg.value >= 0);
 
-        require(!isFarmActive[_farmId]);
+        // require(!isFarmActive[_farmId]);
 
         isFarmActive[_farmId] = true;
 
