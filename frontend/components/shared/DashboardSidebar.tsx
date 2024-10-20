@@ -155,8 +155,8 @@ export const navDashboardLinks = [
         href: "/user/portfolio",
     },
     {
-        name: "Explore",
-        href: "/user/explore",
+        name: "Investments",
+        href: "/user/investments",
     },
     {
         name: "Governance",

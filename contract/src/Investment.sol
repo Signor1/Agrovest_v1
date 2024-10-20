@@ -13,15 +13,20 @@ contract Investment {
 
     uint256 investmentCounter;
 
+    uint256 investorCount;
+
     struct FarmInvestmentDetails {
         uint256 id;
         uint256 farmId;
+        string image;
         string name;
         string about;
         address owner;
         uint256 minAmount;
+        uint256 amountRaised;
         uint256 startDate;
         uint256 endDate;
+        uint256 farmInvestorCount;
     }
 
     struct Investors {
@@ -47,6 +52,9 @@ contract Investment {
         uint256 amount
     );
 
+    // Total investments in ethers
+    uint256 totalInvestment;
+
     // Array of all farms
     FarmInvestmentDetails[] public allInvestableFarms;
 
@@ -60,11 +68,11 @@ contract Investment {
     Investors[] public allInvestors;
 
     // Mapping of farm ID to Investors Address to Amount
-    mapping(uint256 => mapping(address => uint256))
-        public farmIDToAddressToAmount;
+   mapping(uint256 => Investors[]) public farmInvestors;
 
     function createInvestment(
         uint256 _farmId,
+        string memory _image,
         string memory _name,
         string memory _about,
         uint256 _minAmount,
@@ -89,12 +97,15 @@ contract Investment {
         farmIdToFarmStruct[_farmId] = FarmInvestmentDetails({
             id: investmentCounter,
             farmId: _farmId,
+            image: _image,
             name: _name,
             about: _about,
             owner: _owner,
             minAmount: _minAmount,
             startDate: block.timestamp,
-            endDate: _endDate
+            endDate: _endDate,
+            amountRaised: 0,
+            farmInvestorCount: 0
         });
 
         investmentCounter++;
@@ -102,58 +113,64 @@ contract Investment {
         emit NewFarmCreated(_farmId, _owner);
     }
 
-    function investmentERC20(uint256 _farmId, uint256 _amount) external {
-        require(_amount >= farmIdToFarmStruct[_farmId].minAmount);
-
-        require(!isFarmActive[_farmId]);
-
-        token.transferFrom(msg.sender, address(this), _amount);
-
-        isFarmActive[_farmId] = true;
-        farmIDToAddressToAmount[_farmId][msg.sender] = _amount;
-
-        emit NewFarmInvestment(_farmId, msg.sender, _amount);
-    }
-
     function investEthers(uint256 _farmId) external payable {
-        require(msg.value >= farmIdToFarmStruct[_farmId].minAmount);
+        require(msg.value >= 0);
 
-        require(!isFarmActive[_farmId]);
+        // require(!isFarmActive[_farmId]);
 
         isFarmActive[_farmId] = true;
-        farmIDToAddressToAmount[_farmId][msg.sender] = msg.value;
+
+        farmIdToFarmStruct[_farmId].amountRaised += msg.value;
+
+        farmIdToFarmStruct[_farmId].farmInvestorCount += 1;
+
+        totalInvestment += msg.value;
+
+        Investors memory newInvestor;
+
+        newInvestor.id = investorCount;
+        newInvestor.farmID = _farmId;
+        newInvestor.investorAddress = msg.sender;
+        newInvestor.amount = msg.value;
+
+        allInvestors.push(newInvestor);
+
+        farmInvestors[_farmId].push(newInvestor);
 
         emit NewFarmInvestment(_farmId, msg.sender, msg.value);
     }
 
-    function claimInvestmentIERC20(uint256 _id, uint256 _amount) external {
+    function claimInvestmentEthers(uint256 _id, uint256 _amount) external payable {
+        
         require(isFarmActive[_id]);
-        require(farmIDToAddressToAmount[_id][msg.sender] >= _amount);
-        require(block.timestamp >= farmIdToFarmStruct[_id].endDate);
 
-        isFarmActive[_id] = false;
-
-        delete farmIDToAddressToAmount[_id][msg.sender];
-
-        token.transfer(msg.sender, _amount);
-
-        emit InvestmentWithdrawn(_id, msg.sender, _amount);
-    }
-
-    function claimInvestmentEthers(uint256 _id) external payable {
-        require(isFarmActive[_id]);
-        require(farmIDToAddressToAmount[_id][msg.sender] >= msg.value);
+        require(farmIdToFarmStruct[_id].amountRaised >= _amount);
 
         require(block.timestamp >= farmIdToFarmStruct[_id].endDate);
 
         isFarmActive[_id] = false;
 
         address payable to = payable(msg.sender);
-        to.transfer(farmIDToAddressToAmount[_id][msg.sender]);
 
-        delete farmIDToAddressToAmount[_id][msg.sender];
+        to.transfer(farmIdToFarmStruct[_id].amountRaised);
 
         emit InvestmentWithdrawn(_id, msg.sender, msg.value);
+    }
+
+    function getAllInvestors() external view returns  (Investors[] memory) {
+        return allInvestors;
+    }
+
+    function getAllInvestableFarms() external view returns (FarmInvestmentDetails[] memory) {
+        return allInvestableFarms;
+    }
+
+    function getTotalInvestment() external view returns (uint) {
+        return totalInvestment;
+    }
+
+    function getAllFarmInvestors(uint _farmId) external view returns (Investors[] memory) {
+        return farmInvestors[_farmId];
     }
 
     fallback() external payable {}
