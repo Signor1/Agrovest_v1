@@ -1,6 +1,5 @@
 "use client";
-import useGetAllFarmProducts from "@/hooks/ReadHooks/useGetAllFarmProducts";
-// import { farmProducts, ProductType } from '@/utils/products';
+import { ProductType } from "@/utils/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -15,11 +14,11 @@ const Products = ({ title, data }: { title: string; data: [] }) => {
           {title}
         </h1>
         {data?.length == 0 ? (
-          <h1 className="md:text-2xl text-xl text-darkgreen font-medium flex w-full h-full justify-center items-center mt-8">You don't have a product yet</h1>
+          <h1 className="md:text-2xl text-xl text-darkgreen font-medium flex w-full h-full justify-center items-center mt-8">You don&apos;t have a product yet</h1>
         ) : (
           <div className="w-full grid lg:grid-cols-3 md:grid-cols-2 gap-6">
             {data?.map(
-              (product: any, index: number): JSX.Element => (
+              (product: ProductType, index: number): JSX.Element => (
                 <div
                   key={index}
                   className="bg-gray-100 rounded-[10px] p-4 shadow-lg flex flex-col gap-2"

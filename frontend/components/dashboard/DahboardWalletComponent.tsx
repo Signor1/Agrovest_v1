@@ -13,14 +13,12 @@ import {
   export function DashboardWalletComponents() {
    const router = useRouter();
   
-   const { address: accountAddress, status } = useAccount();
+   const { status } = useAccount();
    useEffect(() => {
-      if (status === "connected") {
-        router.push('/user')
-      }else {
-        router.push("/")
+      if (status !== "connected") {
+        router.push('/')
       }
-    }, [status])
+    }, [status, router])
     
     
     return (

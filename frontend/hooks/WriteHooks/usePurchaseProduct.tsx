@@ -1,20 +1,21 @@
 import { useWriteContract } from "wagmi";
 import farmAbi from "../../abis/farm.json";
-import { getAddress, parseEther } from "viem";
+import { getAddress } from "viem";
 import { useCallback } from "react";
 
 const usePurchaseProduct = () => {
-  const { writeContract } = useWriteContract();
+  const { writeContractAsync } = useWriteContract();
   const contractAddress = process.env.NEXT_PUBLIC_FARM_CONTRACT_ADDRESS;
 
   const purchaseSingleProduct = useCallback(
-    async (_productId: number, _productPrice: number) => {
+    async (_productId: number, _productPrice: bigint) => {
       try {
-        const result = writeContract({
+        const result = writeContractAsync({
           abi: farmAbi,
           address: getAddress(contractAddress ? contractAddress : ""),
           functionName: "purchaseProduct",
-          args: [_productId, {value: parseEther(_productPrice.toString())}],
+          args: [_productId],
+          value: _productPrice
         });
         return result;
       } catch (err) {
@@ -22,11 +23,11 @@ const usePurchaseProduct = () => {
         throw err;
       }
     },
-    [writeContract, contractAddress]
+    [writeContractAsync, contractAddress]
   );
 
    const purchaseMultipleProducts = useCallback(
-    async (products: { id: number, price: number }[]) => {
+    async (products: { id: number, price: bigint }[]) => {
       try {
         const txResponses = await Promise.all(
           products.map(({ id, price }) => purchaseSingleProduct(id, price))

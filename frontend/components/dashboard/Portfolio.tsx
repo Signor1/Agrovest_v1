@@ -17,6 +17,7 @@ import {
 import useRegisterFarm from "@/hooks/WriteHooks/useRegisterFarm";
 import { uploadImageToIPFS } from "@/utils/uploadToIPFS";
 import { toast } from "sonner";
+import { FarmType } from "@/utils/types";
 
 const UserPortfolio = () => {
   const { address } = useAccount();
@@ -27,13 +28,13 @@ const UserPortfolio = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
 
-  const [userFarm, setUserFarm] = useState<any>([]);
+  const [userFarm, setUserFarm] = useState<FarmType[]>([]);
   const [selectedFile, setSelectedFile] = useState<any>();
   const [productName, setProductName] = useState("");
   const [productImage, setProductImage] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [contactInfo, setContactInfo] = useState("");
-  const [farmOwner, setFarmOwner] = useState(address);
+  const [farmOwner] = useState(address);
   const [farmLocation, setFarmLocation] = useState("");
 
   const handleSelectImage = async ({ target }: { target: any }) => {
@@ -44,8 +45,6 @@ const UserPortfolio = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    toast.loading("Creating your Farm");
-
     try {
       await registerFarm(
         productName,
@@ -73,10 +72,10 @@ const UserPortfolio = () => {
 
   useMemo(() => {
     const userFamrs = allFarms?.filter(
-      (farm: any) => farm.farmerAddress === address
+      (farm: FarmType) => farm.farmerAddress === address
     );
     setUserFarm(userFamrs);
-  }, [address]);
+  }, [address, allFarms]);
   const path = usePathname();
   const router = useRouter();
 
@@ -135,7 +134,7 @@ const UserPortfolio = () => {
             You have not registered a farm
           </h1>
         ) : (
-          userFarm?.map((res: any, index: number) => (
+          userFarm?.map((res: FarmType, index: number) => (
             <div
               key={index}
               className="bg-gray-100 rounded-[10px] p-4 shadow-lg flex flex-col items-end gap-2"

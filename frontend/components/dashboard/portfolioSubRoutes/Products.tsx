@@ -5,8 +5,9 @@ import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { formatEther } from "viem";
 import PortfolioAnalytics from "./PortfolioAnalytics";
+import { ProductType } from "@/utils/types";
 
-const Products = ({ data }: any) => {
+const Products = ({ data }: {data: ProductType[]}) => {
   const path = usePathname();
   const router = useRouter();
 
@@ -53,12 +54,12 @@ const Products = ({ data }: any) => {
 
       {data?.length == 0 ? (
         <h1 className="md:text-2xl text-xl text-darkgreen font-medium flex w-full h-full justify-center items-center mt-8">
-          You don't have a product yet
+          You don&apos;t have a product yet
         </h1>
       ) : (
         <div className="w-full grid lg:grid-cols-3 md:grid-cols-2 gap-6">
           {data?.map(
-            (product: any, index: number): JSX.Element => (
+            (product: ProductType, index: number): JSX.Element => (
               <div
                 key={index}
                 className="bg-gray-100 rounded-[10px] p-4 shadow-lg flex flex-col gap-2"

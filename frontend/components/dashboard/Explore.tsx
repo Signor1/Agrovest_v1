@@ -10,8 +10,6 @@ const ExploreUserFarm = () => {
 
   const {data: investment} = useGetAllAvailableInvestment()
 
-  console.log(investment);
-
   const router = useRouter();  
 
   return (

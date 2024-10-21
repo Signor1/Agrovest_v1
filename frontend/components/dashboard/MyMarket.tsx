@@ -46,7 +46,6 @@ const MyMarket = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    toast.loading("Adding Farm Product");
     try {
       await addProduct(productName, productImage, productDesc, productPrice);
       toast.dismiss();

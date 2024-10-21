@@ -18,10 +18,11 @@ import { formatEther } from 'viem';
 import useGetTotalSales from '@/hooks/ReadHooks/useGetTotalSales';
 import useGetTotalInvestment from '@/hooks/ReadHooks/useGetTotalInvestment';
 import useGetAllAvailableInvestment from '@/hooks/ReadHooks/useGetAllAvailableInvestment';
+import { InvestmentType } from '@/utils/types';
 
 const UserDashboard = () => {
     const {data: products} = useGetAllFarmProducts();
-    const {data: farms} = useGetAllFarms();
+    const {data: farms = []} = useGetAllFarms();
     const {data: investors} = useGetAllInvestors();
     const {data: totalSales} = useGetTotalSales();
     const {data: totalInvestment} = useGetTotalInvestment();
@@ -54,7 +55,7 @@ const UserDashboard = () => {
                 </div>
             </main>
 
-            {/* <main className='w-full grid lg:grid-cols-5 md:grid-cols-2 gap-4 my-7'>
+            <main className='w-full grid lg:grid-cols-5 md:grid-cols-2 gap-4 my-7'>
                 <div className="lg:col-span-3 flex flex-col bg-gray-100 rounded-[5px] p-4">
                     <h1 className='uppercase text-gray-800 text-lg font-medium  text-center'>Monthly Reports</h1>
                     <Barchart />
@@ -63,7 +64,7 @@ const UserDashboard = () => {
                     <h1 className='uppercase text-gray-800 text-lg font-medium  text-center'>Sales Reports</h1>
                     <Piechart />
                 </div>
-            </main> */}
+            </main>
 
             {/* table  */}
             <main className='w-full bg-gray-100 rounded-[5px] p-4 flex flex-col gap-4'>
@@ -72,22 +73,22 @@ const UserDashboard = () => {
                     <TableHeader>
                         <TableRow className='text-gray-800'>
                             <TableHead className="text-start">Farm Name</TableHead>
-                            <TableHead>Fund&apos;s Target</TableHead>
-                            <TableHead>Investors</TableHead>
-                            <TableHead>Amount Raised</TableHead>
-                            <TableHead>Balance</TableHead>
+                            <TableHead className='text-center'>Fund&apos;s Target</TableHead>
+                            <TableHead className='text-center'>Investors</TableHead>
+                            <TableHead className='text-center'>Amount Raised</TableHead>
+                            <TableHead className='text-center'>Amount Remaining</TableHead>
                             <TableHead className="text-center">Status</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {
-                            availableInvestment?.slice(0, 3).map((farm: any, index: number) => (
+                            availableInvestment?.slice(0, 3).map((farm: InvestmentType, index: number) => (
                                 <TableRow key={index} className='text-gray-600'>
                                     <TableCell className="font-medium text-start">{farm.name}</TableCell>
-                                    <TableCell>{farm.minAmount}</TableCell>
-                                    <TableCell>{farm.farmInvestorCount}</TableCell>
-                                    <TableCell>{farm.amountRaised}</TableCell>
-                                    <TableCell>{farm.minAmount - farm.amountRaised}</TableCell>
+                                    <TableCell className='text-center'>{formatEther(BigInt(farm.minAmount))} ETH</TableCell>
+                                    <TableCell className='text-center'>{Number(farm.farmInvestorCount)}</TableCell>
+                                    <TableCell className='text-center'>{formatEther(BigInt(farm.amountRaised))} ETH</TableCell>
+                                    <TableCell className='text-center'>{formatEther(BigInt(Number(farm.minAmount) - Number(farm.amountRaised)))} ETH</TableCell>
                                     <TableCell className="text-center">{(farm.minAmount - farm.amountRaised ) > 0 ? "Ongoing": "Ended"}</TableCell>
                                 </TableRow>
                             ))

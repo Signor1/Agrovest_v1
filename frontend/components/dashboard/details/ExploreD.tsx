@@ -42,14 +42,14 @@ const ExploreD = ({ id }: { id: string }) => {
       (farm: any) => Number(farm.farm_id) === Number(id)
     );
     setCurrentData(farmDetail);
-  }, [id]);
+  }, [id, allFarms]);
 
   useMemo(() => {
     const farmInvestment = investment?.find(
       (investor: any) => Number(investor.farmId) === Number(id)
     );
     setInvestmentData(farmInvestment);
-  }, [id]);
+  }, [id, investment]);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -57,7 +57,6 @@ const ExploreD = ({ id }: { id: string }) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    toast.loading("Investing");
     try {
       await investEthers(Number(id), parseEther(amount.toString()));
       toast.dismiss();
@@ -156,12 +155,12 @@ const ExploreD = ({ id }: { id: string }) => {
           <TableBody>
             {farmInvestors?.map((investor: any, index: number) => (
               <TableRow key={index} className="text-gray-600">
-                <TableCell>{investor.id}</TableCell>
+                <TableCell>{Number(investor.id)}</TableCell>
 
                 <TableCell className="font-medium text-start">
                   {investor.investorAddress}
                 </TableCell>
-                <TableCell>{investor.amount}</TableCell>
+                <TableCell>{Number(investor.amount)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

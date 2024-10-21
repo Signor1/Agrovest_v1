@@ -12,29 +12,30 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Image from "next/image";
-import { FaMinus, FaPlus } from "react-icons/fa6";
 import { Button } from "@nextui-org/react";
 import { useAccount } from "wagmi";
 import useGetCartProducts from "@/hooks/ReadHooks/useGetCartProducts";
 import { formatEther } from "viem";
 import usePurchaseProduct from "@/hooks/WriteHooks/usePurchaseProduct";
 import { toast } from "sonner";
+import useRemoveProductFromCart from "@/hooks/WriteHooks/useRemoveProductFromCart";
+import { ProductType } from "@/utils/types";
 
 const MyCarts = () => {
   // Hook calls
   const { address } = useAccount();
   const { data: initialCartItems } = useGetCartProducts(address);
   const {purchaseMultipleProducts} = usePurchaseProduct();
-  console.log(initialCartItems);
+  const removeProduct = useRemoveProductFromCart();
+
   const productsToPurchase = initialCartItems?.map((product: { product_id: bigint; product_price: bigint }) => ({
     id: Number(product.product_id),
-    price: Number(product.product_price),
+    price: BigInt(product.product_price),
   }));
 
     console.log(productsToPurchase)
 
   const handlePurchaseProduct=async()=>{
-    toast.loading("Purchasing products");
     try{
       await purchaseMultipleProducts(productsToPurchase);
       toast.dismiss()
@@ -48,30 +49,24 @@ const MyCarts = () => {
   }
 
   const path = usePathname();
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cartItems, setCartItems] = useState<ProductType[]>([]);
 
-  const handleIncrement = (index: number) => {
-    setCartItems((prevItems: any) =>
-      prevItems.map((item: any, i: number) =>
-        i === index ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
-  };
-
-  const handleDecrement = (index: number) => {
-    setCartItems((prevItems: any[]) =>
-      prevItems.map((item: any, i: number) =>
-        i === index && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
-  };
+  const handleRemoveFromCart = async(id: number) =>{
+    try {
+      await removeProduct(id)
+      toast.dismiss();
+      toast.success("Product removed from cart successfully!");
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Error removing product from cart. Please try again.");
+      console.error(err);
+    }
+  }
 
   useEffect(() => {
     if (initialCartItems) {
       setCartItems(
-        initialCartItems.map((item: any) => ({ ...item, quantity: 1 }))
+        initialCartItems.map((item: ProductType) => ({ ...item, quantity: 1 }))
       );
     }
   }, [initialCartItems]);
@@ -79,7 +74,7 @@ const MyCarts = () => {
   // Calculate the subtotal using useMemo to memoize the calculation
   const subtotal = useMemo(() => {
     return cartItems?.reduce(
-      (acc: any, item: any) => acc + Number(item.product_price) * item.quantity,
+      (acc: number, item: ProductType) => acc + Number(item.product_price) * item.quantity,
       0
     );
   }, [cartItems]);
@@ -132,13 +127,11 @@ const MyCarts = () => {
             <TableHeader>
               <TableRow className="text-gray-800">
                 <TableHead className="text-start">Product</TableHead>
-                <TableHead>Price(ETH)</TableHead>
-                <TableHead>Quantity</TableHead>
                 <TableHead className="text-center">Total(ETH)</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {cartItems?.map((item: any, index: number) => (
+              {cartItems?.map((item: ProductType, index: number) => (
                 <TableRow key={index} className="text-gray-600">
                   <TableCell className="font-medium text-start">
                     <div className="flex items-center gap-2">
@@ -161,36 +154,21 @@ const MyCarts = () => {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="font-medium">
-                    {formatEther(item.product_price)}
+                  
+                  <TableCell className="text-center font-semibold">
+                    {formatEther(
+                      BigInt(Number(item.product_price))
+                    )}
                   </TableCell>
                   <TableCell>
                     <div className="flex">
                       <button
-                        className="bg-darkgreen text-gray-200 flex justify-center items-center md:w-6 md:h-6 w-8 h-8 text-base"
-                        onClick={() => handleDecrement(index)}
+                        className="bg-darkgreen text-gray-200 flex justify-center items-center p-2 rounded-md text-xs"
+                        onClick={() => handleRemoveFromCart(Number(item.product_id))}
                       >
-                        <FaMinus />
-                      </button>
-                      <input
-                        type="number"
-                        value={item.quantity}
-                        min={1}
-                        className="w-6 h-6 border-[0.5px] border-gray-400 text-center font-medium text-gray-700"
-                        readOnly
-                      />
-                      <button
-                        className="bg-darkgreen text-gray-200 flex justify-center items-center md:w-6 md:h-6 w-8 h-8 text-base"
-                        onClick={() => handleIncrement(index)}
-                      >
-                        <FaPlus />
+                       Remove from cart
                       </button>
                     </div>
-                  </TableCell>
-                  <TableCell className="text-center font-semibold">
-                    {formatEther(
-                      BigInt(Number(item.product_price) * item.quantity)
-                    )}
                   </TableCell>
                 </TableRow>
               ))}

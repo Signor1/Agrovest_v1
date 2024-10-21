@@ -28,7 +28,7 @@ import useCreateInvestment from "@/hooks/WriteHooks/useCreateInvestment";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
 import { uploadImageToIPFS } from "@/utils/uploadToIPFS";
-const { datetimeToEpochTime } = require('datetime-epoch-conversion');
+import { datetimeToEpochTime } from 'datetime-epoch-conversion';
 
 
 const FarmPortfolioD = ({ id }: { id: string }) => {
@@ -47,14 +47,14 @@ const FarmPortfolioD = ({ id }: { id: string }) => {
       (farm: any) => Number(farm.farm_id) === Number(id)
     );
     setCurrentData(farmDetail);
-  }, [id]);
+  }, [id, allFarms]);
 
   useMemo(() => {
     const farmInvestment = investment?.find(
       (investor: any) => Number(investor.farmId) === Number(id)
     );
     setInvestmentData(farmInvestment);
-  }, [id]);
+  }, [id, investment]);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedFile, setSelectedFile] = useState<any>();
@@ -96,19 +96,19 @@ const FarmPortfolioD = ({ id }: { id: string }) => {
         <div className="rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
           <h4 className="text-gray-800 font-light">Funding Target</h4>
           <h1 className="text-2xl text-darkgreen font-semibold">
-            {Number(investmentData?.minAmount)} ETH
+            {Number.isNaN(Number(investmentData?.minAmount)) ? "0": Number(investmentData?.minAmount) } ETH
           </h1>
         </div>
         <div className="rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
           <h4 className="text-gray-800 font-light">Funds Raised</h4>
           <h1 className="text-2xl text-darkgreen font-semibold">
-            {Number(investmentData?.amountRaised)} ETH
+            {Number.isNaN(Number(investmentData?.amountRaised))? "0" : Number(investmentData?.amountRaised) } ETH
           </h1>
         </div>
         <div className="rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
           <h4 className="text-gray-800 font-light">Investors</h4>
           <h1 className="text-2xl text-darkgreen font-semibold">
-            {Number(investmentData?.farmInvestorCount)} 
+            {Number.isNaN(Number(investmentData?.farmInvestorCount))? "0" : Number(investmentData?.farmInvestorCount)} 
           </h1>
         </div>
         <div className="rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
