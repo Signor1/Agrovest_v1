@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,31 +22,28 @@ const Products = ({ data }: any) => {
       <div className="w-full flex gap-0 md:ml-3">
         <Link
           href="/user/portfolio"
-          className={`text-base font-medium py-2 px-4  ${
-            path === "/user/portfolio"
+          className={`text-base font-medium py-2 px-4  ${path === "/user/portfolio"
               ? "bg-darkgreen text-gray-200"
               : "text-darkgreen bg-lightgreen"
-          }`}
+            }`}
         >
           Farm
         </Link>
         <Link
           href="/user/portfolio/investments"
-          className={`text-base font-medium py-2 px-4  ${
-            path === "/user/portfolio/investments"
+          className={`text-base font-medium py-2 px-4  ${path === "/user/portfolio/investments"
               ? "bg-darkgreen text-gray-200"
               : "text-darkgreen bg-lightgreen"
-          }`}
+            }`}
         >
           Investments
         </Link>
         <Link
           href="/user/portfolio/products"
-          className={`text-base font-medium py-2 px-4  ${
-            path === "/user/portfolio/products"
+          className={`text-base font-medium py-2 px-4  ${path === "/user/portfolio/products"
               ? "bg-darkgreen text-gray-200"
               : "text-darkgreen bg-lightgreen"
-          }`}
+            }`}
         >
           Products
         </Link>
@@ -53,7 +51,7 @@ const Products = ({ data }: any) => {
 
       {data?.length == 0 ? (
         <h1 className="md:text-2xl text-xl text-darkgreen font-medium flex w-full h-full justify-center items-center mt-8">
-          You don't have a product yet
+          You don&apos;t have a product yet
         </h1>
       ) : (
         <div className="w-full grid lg:grid-cols-3 md:grid-cols-2 gap-6">

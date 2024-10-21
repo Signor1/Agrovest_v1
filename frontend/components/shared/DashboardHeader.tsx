@@ -3,9 +3,6 @@ import Logo from './Logo';
 import logo from "@/public/logo-green.png";
 import Greeting from './Greeting';
 import Link from 'next/link';
-import { useWalletInfo, useWeb3Modal } from '@web3modal/wagmi/react';
-import { useAccount } from 'wagmi';
-import { WalletConnected } from './WalletConnected';
 import { DashboardWalletComponents } from '../dashboard/DahboardWalletComponent';
 const DashboardHeader = (
     {
@@ -92,7 +89,7 @@ const DashboardHeader = (
                         }
                     </button> */}
 
-                        <DashboardWalletComponents />
+                    <DashboardWalletComponents />
                     {/* <!-- User Area --> */}
 
                     <Link href={`/user/transactions`} className='text-darkgreen py-1.5 px-3 bg-lightgreen rounded'>

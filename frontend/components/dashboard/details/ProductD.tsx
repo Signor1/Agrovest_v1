@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Image from "next/image";
 import React, { FormEvent, useMemo, useState } from "react";
@@ -18,7 +19,7 @@ import { toast } from "sonner";
 import useAddProductToCart from "@/hooks/WriteHooks/useAddProductToCart";
 
 const ProductD = ({ id }: { id: string }) => {
-    // Hook calls
+  // Hook calls
   const { data: products } = useGetAllFarmProducts();
   const { data: reviews } = useGetProductReview(Number(id))
   const addProductToCart = useAddProductToCart()
@@ -31,7 +32,7 @@ const ProductD = ({ id }: { id: string }) => {
     );
     setCurrentData(farmDetail);
 
-  }, [id]);
+  }, [id, products]);
 
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -52,7 +53,7 @@ const ProductD = ({ id }: { id: string }) => {
     e.preventDefault();
   };
 
-  const handleAddToCart = async() =>{
+  const handleAddToCart = async () => {
     toast.loading("Adding item to cart");
     try {
       await addProductToCart(Number(id))
@@ -125,7 +126,7 @@ const ProductD = ({ id }: { id: string }) => {
           <Button
             type="button"
             className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[7px] text-base mt-3"
-            onClick={()=>handleAddToCart()}
+            onClick={() => handleAddToCart()}
           >
             Add to cart
           </Button>
@@ -147,7 +148,7 @@ const ProductD = ({ id }: { id: string }) => {
         </div>
 
         <section className="w-full flex flex-col gap-4">
-          {reviews?.map((review:any, index:number) => (
+          {reviews?.map((review: any, index: number) => (
             <div
               key={index}
               className="w-full flex md:flex-row flex-col justify-start items-start md:gap-6 gap-3 rounded bg-gray-50 p-4"

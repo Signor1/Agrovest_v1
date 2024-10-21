@@ -28,14 +28,14 @@ import useCreateInvestment from "@/hooks/WriteHooks/useCreateInvestment";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
 import { uploadImageToIPFS } from "@/utils/uploadToIPFS";
-const { datetimeToEpochTime } = require('datetime-epoch-conversion');
+import { datetimeToEpochTime } from "datetime-epoch-conversion";
 
 
 const FarmPortfolioD = ({ id }: { id: string }) => {
-  const {address} = useAccount();
+  const { address } = useAccount();
   const { data: allFarms } = useGetAllFarms();
-  const {data: farmInvestors} = useGetFarmInvestors(Number(id))
-  const {data: investment} = useGetAllAvailableInvestment()
+  const { data: farmInvestors } = useGetFarmInvestors(Number(id))
+  const { data: investment } = useGetAllAvailableInvestment()
   const createInvestment = useCreateInvestment()
   const [currentData, setCurrentData] = useState<any>({});
   const [investmentData, setInvestmentData] = useState<any>({});
@@ -47,14 +47,14 @@ const FarmPortfolioD = ({ id }: { id: string }) => {
       (farm: any) => Number(farm.farm_id) === Number(id)
     );
     setCurrentData(farmDetail);
-  }, [id]);
+  }, [id, allFarms]);
 
   useMemo(() => {
     const farmInvestment = investment?.find(
       (investor: any) => Number(investor.farmId) === Number(id)
     );
     setInvestmentData(farmInvestment);
-  }, [id]);
+  }, [id, investment]);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedFile, setSelectedFile] = useState<any>();
@@ -70,7 +70,7 @@ const FarmPortfolioD = ({ id }: { id: string }) => {
     setInvestmentImage(imageHash);
   };
 
-  const handleSubmit = async(e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
       await createInvestment(Number(id), investmentImage, investmentName, aboutInvestment, Number(investmentTarget), datetimeToEpochTime(investmentEndDate), address!);
@@ -108,7 +108,7 @@ const FarmPortfolioD = ({ id }: { id: string }) => {
         <div className="rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
           <h4 className="text-gray-800 font-light">Investors</h4>
           <h1 className="text-2xl text-darkgreen font-semibold">
-            {Number(investmentData?.farmInvestorCount)} 
+            {Number(investmentData?.farmInvestorCount)}
           </h1>
         </div>
         <div className="rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
@@ -169,7 +169,7 @@ const FarmPortfolioD = ({ id }: { id: string }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {farmInvestors?.map((investor:any, index: number) => (
+            {farmInvestors?.map((investor: any, index: number) => (
               <TableRow key={index} className="text-gray-600">
                 <TableCell>{investor.id}</TableCell>
 
@@ -192,8 +192,8 @@ const FarmPortfolioD = ({ id }: { id: string }) => {
                 Investment Profile
               </ModalHeader>
               <ModalBody className="flex flex-col gap-4 py-3">
-                <form className="w-full grid gap-4"  onSubmit={handleSubmit}>
-                <div className="w-full flex flex-col items-center">
+                <form className="w-full grid gap-4" onSubmit={handleSubmit}>
+                  <div className="w-full flex flex-col items-center">
                     <div className="w-[80px] h-[80px] border-[0.5px] border-darkgreen rounded relative ">
                       {selectedFile ? (
                         <Image
@@ -328,7 +328,7 @@ const FarmPortfolioD = ({ id }: { id: string }) => {
                       onChange={(e) => setInvestmentEndDate(e.target.value)}
                     />
                   </div>
-                  <Button       
+                  <Button
                     type="submit"
                     className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[7px] text-base mt-3"
                   >

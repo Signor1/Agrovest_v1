@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import useGetAllFarmProducts from "@/hooks/ReadHooks/useGetAllFarmProducts";
 // import { farmProducts, ProductType } from '@/utils/products';
@@ -15,7 +17,7 @@ const Products = ({ title, data }: { title: string; data: [] }) => {
           {title}
         </h1>
         {data?.length == 0 ? (
-          <h1 className="md:text-2xl text-xl text-darkgreen font-medium flex w-full h-full justify-center items-center mt-8">You don't have a product yet</h1>
+          <h1 className="md:text-2xl text-xl text-darkgreen font-medium flex w-full h-full justify-center items-center mt-8">You don&apos;t have a product yet</h1>
         ) : (
           <div className="w-full grid lg:grid-cols-3 md:grid-cols-2 gap-6">
             {data?.map(

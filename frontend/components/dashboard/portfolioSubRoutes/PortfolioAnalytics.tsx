@@ -1,9 +1,9 @@
 import useGetAllPurchasedProduct from "@/hooks/ReadHooks/useGetAllPurchasedProduct";
 import { useAccount } from "wagmi";
 
-type Props = {};
 
-const PortfolioAnalytics = (props: Props) => {
+
+const PortfolioAnalytics = () => {
   const { address } = useAccount();
   const { data: purchases } = useGetAllPurchasedProduct(address);
   return (

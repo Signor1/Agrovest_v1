@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { FormEvent, useMemo, useState } from "react";
 import useGetAllFarms from "@/hooks/ReadHooks/useGetAllFarms";
@@ -76,17 +78,17 @@ const UserPortfolio = () => {
       (farm: any) => farm.farmerAddress === address
     );
     setUserFarm(userFamrs);
-  }, [address]);
+  }, [address, allFarms]);
   const path = usePathname();
   const router = useRouter();
 
   return (
     <section className="w-full flex flex-col gap-6 py-4">
       <div className="flex justify-between items-center">
-      <h1 className="uppercase text-darkgreen font-semibold text-base md:text-xl">
-        Portfolio
-      </h1>
-      <Button
+        <h1 className="uppercase text-darkgreen font-semibold text-base md:text-xl">
+          Portfolio
+        </h1>
+        <Button
           onPress={onOpen}
           className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[7px] text-base"
         >
@@ -99,31 +101,28 @@ const UserPortfolio = () => {
       <div className="w-full flex gap-0 md:ml-3">
         <Link
           href="/user/portfolio"
-          className={`text-base font-medium py-2 px-4  ${
-            path === "/user/portfolio"
-              ? "bg-darkgreen text-gray-200"
-              : "text-darkgreen bg-lightgreen"
-          }`}
+          className={`text-base font-medium py-2 px-4  ${path === "/user/portfolio"
+            ? "bg-darkgreen text-gray-200"
+            : "text-darkgreen bg-lightgreen"
+            }`}
         >
           Farm
         </Link>
         <Link
           href="/user/portfolio/investments"
-          className={`text-base font-medium py-2 px-4  ${
-            path === "/user/portfolio/investments"
-              ? "bg-darkgreen text-gray-200"
-              : "text-darkgreen bg-lightgreen"
-          }`}
+          className={`text-base font-medium py-2 px-4  ${path === "/user/portfolio/investments"
+            ? "bg-darkgreen text-gray-200"
+            : "text-darkgreen bg-lightgreen"
+            }`}
         >
           Investments
         </Link>
         <Link
           href="/user/portfolio/products"
-          className={`text-base font-medium py-2 px-4  ${
-            path === "/user/portfolio/products"
-              ? "bg-darkgreen text-gray-200"
-              : "text-darkgreen bg-lightgreen"
-          }`}
+          className={`text-base font-medium py-2 px-4  ${path === "/user/portfolio/products"
+            ? "bg-darkgreen text-gray-200"
+            : "text-darkgreen bg-lightgreen"
+            }`}
         >
           Products
         </Link>

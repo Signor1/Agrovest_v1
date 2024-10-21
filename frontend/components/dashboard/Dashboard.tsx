@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import React from 'react'
 import dynamic from "next/dynamic";
@@ -20,13 +22,13 @@ import useGetTotalInvestment from '@/hooks/ReadHooks/useGetTotalInvestment';
 import useGetAllAvailableInvestment from '@/hooks/ReadHooks/useGetAllAvailableInvestment';
 
 const UserDashboard = () => {
-    const {data: products} = useGetAllFarmProducts();
-    const {data: farms} = useGetAllFarms();
-    const {data: investors} = useGetAllInvestors();
-    const {data: totalSales} = useGetTotalSales();
-    const {data: totalInvestment} = useGetTotalInvestment();
-    const {data: availableInvestment} = useGetAllAvailableInvestment();
-   
+    const { data: products } = useGetAllFarmProducts();
+    const { data: farms } = useGetAllFarms();
+    const { data: investors } = useGetAllInvestors();
+    const { data: totalSales } = useGetTotalSales();
+    const { data: totalInvestment } = useGetTotalInvestment();
+    const { data: availableInvestment } = useGetAllAvailableInvestment();
+
     return (
         <section className="w-full flex flex-col gap-6 py-4">
             <h1 className='uppercase text-darkgreen font-medium text-base md:text-xl'>Overview</h1>
@@ -88,7 +90,7 @@ const UserDashboard = () => {
                                     <TableCell>{farm.farmInvestorCount}</TableCell>
                                     <TableCell>{farm.amountRaised}</TableCell>
                                     <TableCell>{farm.minAmount - farm.amountRaised}</TableCell>
-                                    <TableCell className="text-center">{(farm.minAmount - farm.amountRaised ) > 0 ? "Ongoing": "Ended"}</TableCell>
+                                    <TableCell className="text-center">{(farm.minAmount - farm.amountRaised) > 0 ? "Ongoing" : "Ended"}</TableCell>
                                 </TableRow>
                             ))
                         }

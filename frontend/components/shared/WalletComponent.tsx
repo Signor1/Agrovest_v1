@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ConnectWallet,
   Wallet,
@@ -11,18 +12,18 @@ import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
 
 export function WalletComponents() {
- const router = useRouter();
+  const router = useRouter();
 
- const { address: accountAddress, status } = useAccount();
- useEffect(() => {
+  const { address: accountAddress, status } = useAccount();
+  useEffect(() => {
     if (status === "connected") {
       router.push('/user')
-    }else {
+    } else {
       router.push("/")
     }
-  }, [status])
-  
-  
+  }, [status, router])
+
+
   return (
     <div className="flex justify-end">
       <Wallet>
