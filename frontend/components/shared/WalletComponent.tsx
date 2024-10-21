@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ConnectWallet,
   Wallet,
@@ -9,13 +10,13 @@ import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
 
 export function WalletComponents() {
- const router = useRouter();
+  const router = useRouter();
 
  const { status } = useAccount();
  useEffect(() => {
     if (status === "connected") {
       router.push('/user')
-    }else {
+    } else {
       router.push("/")
     }
   }, [status, router])

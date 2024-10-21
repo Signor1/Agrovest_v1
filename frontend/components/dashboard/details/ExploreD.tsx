@@ -86,14 +86,14 @@ const ExploreD = ({ id }: { id: string }) => {
         <div className="rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
           <h4 className="text-gray-800 font-light">Funds Raised</h4>
           <h1 className="text-2xl text-darkgreen font-semibold">
-          {Number(investmentData?.amountRaised)} ETH
+            {Number(investmentData?.amountRaised)} ETH
           </h1>
         </div>
         <div className="rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
           <h4 className="text-gray-800 font-light">Investors</h4>
           <h1 className="text-2xl text-darkgreen font-semibold">
-          {Number(investmentData?.farmInvestorCount)} 
-                    </h1>
+            {Number(investmentData?.farmInvestorCount)}
+          </h1>
         </div>
         <div className="rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
           <Button

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,31 +23,28 @@ const Products = ({ data }: {data: ProductType[]}) => {
       <div className="w-full flex gap-0 md:ml-3">
         <Link
           href="/user/portfolio"
-          className={`text-base font-medium py-2 px-4  ${
-            path === "/user/portfolio"
+          className={`text-base font-medium py-2 px-4  ${path === "/user/portfolio"
               ? "bg-darkgreen text-gray-200"
               : "text-darkgreen bg-lightgreen"
-          }`}
+            }`}
         >
           Farm
         </Link>
         <Link
           href="/user/portfolio/investments"
-          className={`text-base font-medium py-2 px-4  ${
-            path === "/user/portfolio/investments"
+          className={`text-base font-medium py-2 px-4  ${path === "/user/portfolio/investments"
               ? "bg-darkgreen text-gray-200"
               : "text-darkgreen bg-lightgreen"
-          }`}
+            }`}
         >
           Investments
         </Link>
         <Link
           href="/user/portfolio/products"
-          className={`text-base font-medium py-2 px-4  ${
-            path === "/user/portfolio/products"
+          className={`text-base font-medium py-2 px-4  ${path === "/user/portfolio/products"
               ? "bg-darkgreen text-gray-200"
               : "text-darkgreen bg-lightgreen"
-          }`}
+            }`}
         >
           Products
         </Link>

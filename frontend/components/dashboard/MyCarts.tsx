@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import Link from "next/link";
@@ -33,7 +34,7 @@ const MyCarts = () => {
     price: BigInt(product.product_price),
   }));
 
-    console.log(productsToPurchase)
+  console.log(productsToPurchase)
 
   const handlePurchaseProduct=async()=>{
     try{
@@ -41,7 +42,7 @@ const MyCarts = () => {
       toast.dismiss()
       toast.success("Product purchased Successfully!");
 
-    }catch (error) {
+    } catch (error) {
       toast.dismiss();
       toast.error("Error purchasing products");
       console.error(error);
@@ -101,21 +102,19 @@ const MyCarts = () => {
       <div className="w-full flex gap-0 md:ml-3">
         <Link
           href="/user/transactions"
-          className={`text-base font-medium py-2 px-4  ${
-            path === "/user/transactions"
+          className={`text-base font-medium py-2 px-4  ${path === "/user/transactions"
               ? "bg-darkgreen text-gray-200"
               : "text-darkgreen bg-lightgreen"
-          }`}
+            }`}
         >
           Cart
         </Link>
         <Link
           href="/user/transactions/purchased"
-          className={`text-base font-medium py-2 px-4  ${
-            path === "/user/transactions/purchased"
+          className={`text-base font-medium py-2 px-4  ${path === "/user/transactions/purchased"
               ? "bg-darkgreen text-gray-200"
               : "text-darkgreen bg-lightgreen"
-          }`}
+            }`}
         >
           Purchased
         </Link>
@@ -187,7 +186,7 @@ const MyCarts = () => {
             <li className="flex w-full justify-between items-center">
               <p className="text-gray-600 font-medium">Discount (2%)</p>
               <p className="text-gray-700 font-semibold">
-                {formatEther (BigInt(discount))} ETH
+                {formatEther(BigInt(discount))} ETH
               </p>
             </li>
             <li className="flex w-full justify-between items-center">
@@ -200,7 +199,7 @@ const MyCarts = () => {
               <Button
                 type="button"
                 className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[7px] w-full text-base mt-3"
-                onClick={()=>handlePurchaseProduct()}
+                onClick={() => handlePurchaseProduct()}
               >
                 Make Payment
               </Button>
