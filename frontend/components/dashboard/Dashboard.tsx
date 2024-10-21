@@ -20,15 +20,15 @@ import { formatEther } from 'viem';
 import useGetTotalSales from '@/hooks/ReadHooks/useGetTotalSales';
 import useGetTotalInvestment from '@/hooks/ReadHooks/useGetTotalInvestment';
 import useGetAllAvailableInvestment from '@/hooks/ReadHooks/useGetAllAvailableInvestment';
-import { InvestmentType } from '@/utils/types';
+import { FarmType, InvestmentType, InvestorsType, ProductType } from '@/utils/types';
 
 const UserDashboard = () => {
-    const {data: products} = useGetAllFarmProducts();
-    const {data: farms = []} = useGetAllFarms();
-    const {data: investors} = useGetAllInvestors();
-    const {data: totalSales} = useGetTotalSales();
-    const {data: totalInvestment} = useGetTotalInvestment();
-    const {data: availableInvestment} = useGetAllAvailableInvestment();
+    const {data: products} = useGetAllFarmProducts() as { data: ProductType[] };
+    const {data: farms } = useGetAllFarms() as {data: FarmType[]};
+    const {data: investors} = useGetAllInvestors() as {data: InvestorsType[]};
+    const {data: totalSales} = useGetTotalSales() as {data: bigint}
+    const {data: totalInvestment} = useGetTotalInvestment()  as {data: bigint}
+    const {data: availableInvestment} = useGetAllAvailableInvestment() as {data: InvestmentType[]}
    
     return (
         <section className="w-full flex flex-col gap-6 py-4">
@@ -87,10 +87,10 @@ const UserDashboard = () => {
                             availableInvestment?.slice(0, 3).map((farm: InvestmentType, index: number) => (
                                 <TableRow key={index} className='text-gray-600'>
                                     <TableCell className="font-medium text-start">{farm.name}</TableCell>
-                                    <TableCell className='text-center'>{formatEther(BigInt(farm.minAmount))} ETH</TableCell>
+                                    <TableCell className='text-center'>{Number(farm.minAmount)} ETH</TableCell>
                                     <TableCell className='text-center'>{Number(farm.farmInvestorCount)}</TableCell>
-                                    <TableCell className='text-center'>{formatEther(BigInt(farm.amountRaised))} ETH</TableCell>
-                                    <TableCell className='text-center'>{formatEther(BigInt(Number(farm.minAmount) - Number(farm.amountRaised)))} ETH</TableCell>
+                                    <TableCell className='text-center'>{Number(farm.amountRaised)} ETH</TableCell>
+                                    <TableCell className='text-center'>{(Number(farm.minAmount) - Number(farm.amountRaised))} ETH</TableCell>
                                     <TableCell className="text-center">{(farm.minAmount - farm.amountRaised ) > 0 ? "Ongoing": "Ended"}</TableCell>
                                 </TableRow>
                             ))

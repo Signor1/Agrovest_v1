@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { formatEther } from "viem";
 
-const Products = ({ title, data }: { title: string; data: [] }) => {
+const Products = ({ title, data }: { title: string; data: ProductType[] }) => {
   const router = useRouter();
   return (
     <section className="w-full flex flex-col px-2 mb-20">
@@ -41,7 +41,7 @@ const Products = ({ title, data }: { title: string; data: [] }) => {
                       {product.product_name}
                     </h4>
                     <p className="text-gray-700">
-                      {`${formatEther(product.product_price)}`}{" "}
+                      {`${formatEther(BigInt(product.product_price))}`}{" "}
                       <span className="font-semibold">ETH</span>
                     </p>
                   </div>

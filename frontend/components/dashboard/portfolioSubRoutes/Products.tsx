@@ -78,7 +78,7 @@ const Products = ({ data }: {data: ProductType[]}) => {
                     {product.product_name}
                   </h4>
                   <p className="text-gray-700">
-                    {`${formatEther(product.product_price)}`}{" "}
+                    {`${formatEther(BigInt(product.product_price))}`}{" "}
                     <span className="font-semibold">ETH</span>
                   </p>
                 </div>

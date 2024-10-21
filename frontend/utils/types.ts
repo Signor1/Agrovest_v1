@@ -23,9 +23,9 @@ export type ProductType = {
 export type InvestmentType = {
   id: number;
   farmId: number;
-  image: number;
-  name: number;
-  about: number;
+  image: string;
+  name: string;
+  about: string;
   owner: `0x${string}`;
   minAmount: number;
   amountRaised: number;

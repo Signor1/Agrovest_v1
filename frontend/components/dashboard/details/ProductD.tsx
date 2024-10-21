@@ -22,8 +22,8 @@ import { ProductType, ReviewType } from "@/utils/types";
 
 const ProductD = ({ id }: { id: string }) => {
   // Hook calls
-  const { data: products } = useGetAllFarmProducts();
-  const { data: reviews } = useGetProductReview(Number(id));
+  const { data: products } = useGetAllFarmProducts() as { data: ProductType[] };
+  const { data: reviews } = useGetProductReview(Number(id)) as {data: ReviewType[]};
   const addProductToCart = useAddProductToCart();
   const submitReview = useSubmitReview();
 
@@ -65,12 +65,7 @@ const ProductD = ({ id }: { id: string }) => {
     }
   };
 
-<<<<<<< HEAD
   const handleAddToCart = async() =>{
-=======
-  const handleAddToCart = async () => {
-    toast.loading("Adding item to cart");
->>>>>>> main
     try {
       await addProductToCart(Number(id))
       toast.dismiss();
@@ -109,7 +104,7 @@ const ProductD = ({ id }: { id: string }) => {
             <p className="text-gray-600">
               {currentData && currentData.product_price && (
                 <span>
-                  {formatEther(currentData.product_price)}{" "}
+                  {formatEther(BigInt(currentData.product_price))}{" "}
                   <span className="font-semibold">ETH</span>
                 </span>
               )}
@@ -164,11 +159,7 @@ const ProductD = ({ id }: { id: string }) => {
         </div>
 
         <section className="w-full flex flex-col gap-4">
-<<<<<<< HEAD
           {reviews?.map((review:ReviewType, index:number) => (
-=======
-          {reviews?.map((review: any, index: number) => (
->>>>>>> main
             <div
               key={index}
               className="w-full flex md:flex-row flex-col justify-start items-start md:gap-6 gap-3 rounded bg-gray-50 p-4"

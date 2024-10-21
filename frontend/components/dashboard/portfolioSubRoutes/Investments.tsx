@@ -10,7 +10,7 @@ import { InvestmentType } from '@/utils/types'
 const Investments = () => {
     const path = usePathname()
     const router = useRouter();
-    const {data: investment} = useGetAllAvailableInvestment()
+    const {data: investment} = useGetAllAvailableInvestment() as {data: InvestmentType[]};
 
     return (
         <section className="w-full flex flex-col gap-6 py-4">
@@ -50,7 +50,7 @@ const Investments = () => {
             <p className="text-sm text-gray-500">{res.about}</p>
             <button
               className="bg-darkgreen text-lightgreen py-2.5 px-6 rounded-[7px] text-base mt-3"
-              onClick={() => router.push(`/user/portfolio/${res.farm_id}`)}
+              onClick={() => router.push(`/user/portfolio/${res.farmId}`)}
             >
               View more
             </button>

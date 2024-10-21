@@ -1,12 +1,13 @@
 import useGetAllPurchasedProduct from "@/hooks/ReadHooks/useGetAllPurchasedProduct";
 import useGetFarmProductByAddress from "@/hooks/ReadHooks/useGetFarmProductByAddress";
+import { ProductType } from "@/utils/types";
 import { useAccount } from "wagmi";
 
 
 const PortfolioAnalytics = () => {
   const { address } = useAccount();
-  const { data: purchases } = useGetAllPurchasedProduct(address);
-  const { data: products } = useGetFarmProductByAddress(address);
+  const { data: purchases } = useGetAllPurchasedProduct(address) as { data: ProductType[] };
+  const { data: products } = useGetFarmProductByAddress(address) as { data: ProductType[] };
 
   return (
     <main className="w-full bg-gray-100 grid lg:grid-cols-5 md:grid-cols-3 gap-4">

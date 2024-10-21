@@ -15,11 +15,13 @@ import {
 import Image from 'next/image'
 import useGetAllPurchasedProduct from '@/hooks/ReadHooks/useGetAllPurchasedProduct'
 import { useAccount } from 'wagmi'
+import { formatEther } from 'viem'
+import { ProductType } from '@/utils/types'
 
 const PurchasedItems = () => {
     const {address} = useAccount()
     const path = usePathname()
-    const {data: purchasedItem} = useGetAllPurchasedProduct(address)
+    const {data: purchasedItem} = useGetAllPurchasedProduct(address) as { data: ProductType[] };
 
     return (
         <section className="w-full flex flex-col gap-6 py-4">
@@ -37,7 +39,6 @@ const PurchasedItems = () => {
                     <TableHeader>
                         <TableRow className='text-gray-800'>
                             <TableHead className="text-start">Product</TableHead>
-                            <TableHead>Price(ETH)</TableHead>
                             <TableHead>Quantity</TableHead>
                             <TableHead className="text-center">Total(ETH)</TableHead>
                         </TableRow>
@@ -57,24 +58,15 @@ const PurchasedItems = () => {
                                             </div>
                                         </div>
                                     </TableCell>
-                                    <TableCell className='font-medium'>{item.priceInEth}</TableCell>
                                     <TableCell>
                                         1
                                     </TableCell>
-                                    <TableCell className="text-center font-semibold">{Number(item.product_price)}</TableCell>
+                                    <TableCell className="text-center font-semibold">{formatEther(BigInt(Number(item.product_price)))}</TableCell>
 
                                 </TableRow>
                             ))
                         }
                     </TableBody>
-                    {/* <TableFooter>
-                        <TableRow >
-                            <TableHead className="text-start font-semibold">Total</TableHead>
-                            <TableHead className="font-semibold">2 ETH</TableHead>
-                            <TableHead className="font-semibold">6</TableHead>
-                            <TableHead className="text-center font-semibold">12 ETH</TableHead>
-                        </TableRow>
-                    </TableFooter> */}
                 </Table>
             </div>
 

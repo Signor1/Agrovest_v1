@@ -4,11 +4,12 @@ import Image from "next/image";
 import React from "react";
 import { useRouter } from "next/navigation";
 import useGetAllAvailableInvestment from "@/hooks/ReadHooks/useGetAllAvailableInvestment";
+import { InvestmentType } from "@/utils/types";
 
 
 const ExploreUserFarm = () => {
 
-  const {data: investment} = useGetAllAvailableInvestment()
+  const {data: investment} = useGetAllAvailableInvestment() as {data: InvestmentType[]}
 
   const router = useRouter();  
 

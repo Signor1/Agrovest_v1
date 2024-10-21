@@ -23,7 +23,7 @@ import { FarmType } from "@/utils/types";
 
 const UserPortfolio = () => {
   const { address } = useAccount();
-  const { data: allFarms } = useGetAllFarms();
+  const { data: allFarms } = useGetAllFarms()  as {data: FarmType[]};
   const registerFarm = useRegisterFarm();
 
 

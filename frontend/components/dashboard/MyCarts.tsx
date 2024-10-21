@@ -25,16 +25,15 @@ import { ProductType } from "@/utils/types";
 const MyCarts = () => {
   // Hook calls
   const { address } = useAccount();
-  const { data: initialCartItems } = useGetCartProducts(address);
+  const { data: initialCartItems } = useGetCartProducts(address) as { data: ProductType[] };
   const {purchaseMultipleProducts} = usePurchaseProduct();
   const removeProduct = useRemoveProductFromCart();
 
-  const productsToPurchase = initialCartItems?.map((product: { product_id: bigint; product_price: bigint }) => ({
+  const productsToPurchase = initialCartItems?.map((product: { product_id: number; product_price: number }) => ({
     id: Number(product.product_id),
     price: BigInt(product.product_price),
   }));
 
-  console.log(productsToPurchase)
 
   const handlePurchaseProduct=async()=>{
     try{
