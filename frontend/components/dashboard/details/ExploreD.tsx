@@ -27,11 +27,12 @@ import useGetAllAvailableInvestment from "@/hooks/ReadHooks/useGetAllAvailableIn
 import { toast } from "sonner";
 import useInvestEthers from "@/hooks/WriteHooks/useInvestEthers";
 import { parseEther } from "viem";
+import { FarmType, InvestmentType, InvestorsType } from "@/utils/types";
 
 const ExploreD = ({ id }: { id: string }) => {
-  const { data: allFarms } = useGetAllFarms();
-  const { data: farmInvestors } = useGetFarmInvestors(Number(id));
-  const { data: investment } = useGetAllAvailableInvestment();
+  const { data: allFarms } = useGetAllFarms() as {data: FarmType[]};
+  const { data: farmInvestors } = useGetFarmInvestors(Number(id)) as {data: InvestorsType[]};;
+  const { data: investment } = useGetAllAvailableInvestment() as {data: InvestmentType[]};
   const investEthers = useInvestEthers();
 
   const [currentData, setCurrentData] = useState<any>([]);
@@ -57,7 +58,6 @@ const ExploreD = ({ id }: { id: string }) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    toast.loading("Investing");
     try {
       await investEthers(Number(id), parseEther(amount.toString()));
       toast.dismiss();
@@ -156,12 +156,12 @@ const ExploreD = ({ id }: { id: string }) => {
           <TableBody>
             {farmInvestors?.map((investor: any, index: number) => (
               <TableRow key={index} className="text-gray-600">
-                <TableCell>{investor.id}</TableCell>
+                <TableCell>{Number(investor.id)}</TableCell>
 
                 <TableCell className="font-medium text-start">
                   {investor.investorAddress}
                 </TableCell>
-                <TableCell>{investor.amount}</TableCell>
+                <TableCell>{Number(investor.amount)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -6,10 +6,11 @@ import React from 'react'
 import Categories from './Categories'
 import Products from './Products'
 import useGetAllFarmProducts from '@/hooks/ReadHooks/useGetAllFarmProducts'
+import { ProductType } from '@/utils/types'
 
 
 const MarketPlace = () => {
-    const {data: products} = useGetAllFarmProducts();
+    const {data: products} = useGetAllFarmProducts() as { data: ProductType[] };
 
     const path = usePathname()
     return (

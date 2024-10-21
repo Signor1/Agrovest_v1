@@ -6,8 +6,9 @@ import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { formatEther } from "viem";
 import PortfolioAnalytics from "./PortfolioAnalytics";
+import { ProductType } from "@/utils/types";
 
-const Products = ({ data }: any) => {
+const Products = ({ data }: {data: ProductType[]}) => {
   const path = usePathname();
   const router = useRouter();
 
@@ -56,7 +57,7 @@ const Products = ({ data }: any) => {
       ) : (
         <div className="w-full grid lg:grid-cols-3 md:grid-cols-2 gap-6">
           {data?.map(
-            (product: any, index: number): JSX.Element => (
+            (product: ProductType, index: number): JSX.Element => (
               <div
                 key={index}
                 className="bg-gray-100 rounded-[10px] p-4 shadow-lg flex flex-col gap-2"
@@ -77,7 +78,7 @@ const Products = ({ data }: any) => {
                     {product.product_name}
                   </h4>
                   <p className="text-gray-700">
-                    {`${formatEther(product.product_price)}`}{" "}
+                    {`${formatEther(BigInt(product.product_price))}`}{" "}
                     <span className="font-semibold">ETH</span>
                   </p>
                 </div>

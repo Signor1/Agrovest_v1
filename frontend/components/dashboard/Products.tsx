@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import useGetAllFarmProducts from "@/hooks/ReadHooks/useGetAllFarmProducts";
-// import { farmProducts, ProductType } from '@/utils/products';
+import { ProductType } from "@/utils/types";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { formatEther } from "viem";
 
-const Products = ({ title, data }: { title: string; data: [] }) => {
+const Products = ({ title, data }: { title: string; data: ProductType[] }) => {
   const router = useRouter();
   return (
     <section className="w-full flex flex-col px-2 mb-20">
@@ -21,7 +20,7 @@ const Products = ({ title, data }: { title: string; data: [] }) => {
         ) : (
           <div className="w-full grid lg:grid-cols-3 md:grid-cols-2 gap-6">
             {data?.map(
-              (product: any, index: number): JSX.Element => (
+              (product: ProductType, index: number): JSX.Element => (
                 <div
                   key={index}
                   className="bg-gray-100 rounded-[10px] p-4 shadow-lg flex flex-col gap-2"
@@ -42,7 +41,7 @@ const Products = ({ title, data }: { title: string; data: [] }) => {
                       {product.product_name}
                     </h4>
                     <p className="text-gray-700">
-                      {`${formatEther(product.product_price)}`}{" "}
+                      {`${formatEther(BigInt(product.product_price))}`}{" "}
                       <span className="font-semibold">ETH</span>
                     </p>
                   </div>

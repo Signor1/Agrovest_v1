@@ -18,13 +18,14 @@ import { useAccount } from "wagmi";
 import useAddFarmProduct from "@/hooks/WriteHooks/useAddFarmProduct";
 import { uploadImageToIPFS } from "@/utils/uploadToIPFS";
 import { toast } from "sonner";
+import { ProductType } from "@/utils/types";
 
 const MyMarket = () => {
   const addProduct = useAddFarmProduct();
 
   const { address } = useAccount();
 
-  const { data: products } = useGetFarmProductByAddress(address);
+  const { data: products } = useGetFarmProductByAddress(address) as { data: ProductType[] };
 
   const path = usePathname();
 
@@ -42,19 +43,18 @@ const MyMarket = () => {
   const [productName, setProductName] = useState("");
   const [productImage, setProductImage] = useState("");
   const [productDesc, setProductDesc] = useState("");
-  const [productPrice, setProductPrice] = useState(0);
+  const [productPrice, setProductPrice] = useState("");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    toast.loading("Adding Farm Product");
     try {
-      await addProduct(productName, productImage, productDesc, productPrice);
+      await addProduct(productName, productImage, productDesc, Number(productPrice));
       toast.dismiss();
       toast.success("Product added Successfully!");
       setProductName("");
       setProductImage("");
       setProductDesc("");
-      setProductPrice(0);
+      setProductPrice("");
       setSelectedFile(null);
       onOpenChange();
     } catch (error) {

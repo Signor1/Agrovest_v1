@@ -28,19 +28,20 @@ import useCreateInvestment from "@/hooks/WriteHooks/useCreateInvestment";
 import { toast } from "sonner";
 import { useAccount } from "wagmi";
 import { uploadImageToIPFS } from "@/utils/uploadToIPFS";
-import { datetimeToEpochTime } from "datetime-epoch-conversion";
+import { datetimeToEpochTime } from 'datetime-epoch-conversion';
+import { formatEther } from "viem";
+import { FarmType, InvestmentType, InvestorsType } from "@/utils/types";
 
 
 const FarmPortfolioD = ({ id }: { id: string }) => {
   const { address } = useAccount();
-  const { data: allFarms } = useGetAllFarms();
-  const { data: farmInvestors } = useGetFarmInvestors(Number(id))
-  const { data: investment } = useGetAllAvailableInvestment()
+  const { data: allFarms } = useGetAllFarms() as {data: FarmType[]};
+  const { data: farmInvestors } = useGetFarmInvestors(Number(id)) as {data: InvestorsType[]};
+  const { data: investment } = useGetAllAvailableInvestment() as {data: InvestmentType[]};
   const createInvestment = useCreateInvestment()
   const [currentData, setCurrentData] = useState<any>({});
   const [investmentData, setInvestmentData] = useState<any>({});
 
-  console.log(farmInvestors)
 
   useMemo(() => {
     const farmDetail = allFarms?.find(
@@ -96,19 +97,19 @@ const FarmPortfolioD = ({ id }: { id: string }) => {
         <div className="rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
           <h4 className="text-gray-800 font-light">Funding Target</h4>
           <h1 className="text-2xl text-darkgreen font-semibold">
-            {Number(investmentData?.minAmount)} ETH
+            {Number.isNaN(Number(investmentData?.minAmount)) ? "0": Number(investmentData?.minAmount) } ETH
           </h1>
         </div>
         <div className="rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
           <h4 className="text-gray-800 font-light">Funds Raised</h4>
           <h1 className="text-2xl text-darkgreen font-semibold">
-            {Number(investmentData?.amountRaised)} ETH
+            {Number.isNaN(Number(investmentData?.amountRaised))? "0" : Number(investmentData?.amountRaised) } ETH
           </h1>
         </div>
         <div className="rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
           <h4 className="text-gray-800 font-light">Investors</h4>
           <h1 className="text-2xl text-darkgreen font-semibold">
-            {Number(investmentData?.farmInvestorCount)}
+            {Number.isNaN(Number(investmentData?.farmInvestorCount))? "0" : Number(investmentData?.farmInvestorCount)} 
           </h1>
         </div>
         <div className="rounded-[5px] p-3 flex flex-col items-center justify-center gap-2">
@@ -171,12 +172,12 @@ const FarmPortfolioD = ({ id }: { id: string }) => {
           <TableBody>
             {farmInvestors?.map((investor: any, index: number) => (
               <TableRow key={index} className="text-gray-600">
-                <TableCell>{investor.id}</TableCell>
+                <TableCell>{Number(investor.id)}</TableCell>
 
                 <TableCell className="font-medium text-start">
                   {investor.investorAddress}
                 </TableCell>
-                <TableCell>{investor.amount}</TableCell>
+                <TableCell>{formatEther(BigInt(Number(investor.amount)))}</TableCell>
               </TableRow>
             ))}
           </TableBody>

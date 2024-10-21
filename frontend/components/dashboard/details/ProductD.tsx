@@ -17,18 +17,21 @@ import { formatEther } from "viem";
 import useGetProductReview from "@/hooks/ReadHooks/useGetProductReview";
 import { toast } from "sonner";
 import useAddProductToCart from "@/hooks/WriteHooks/useAddProductToCart";
+import useSubmitReview from "@/hooks/WriteHooks/useSubmitReview";
+import { ProductType, ReviewType } from "@/utils/types";
 
 const ProductD = ({ id }: { id: string }) => {
   // Hook calls
-  const { data: products } = useGetAllFarmProducts();
-  const { data: reviews } = useGetProductReview(Number(id))
-  const addProductToCart = useAddProductToCart()
+  const { data: products } = useGetAllFarmProducts() as { data: ProductType[] };
+  const { data: reviews } = useGetProductReview(Number(id)) as {data: ReviewType[]};
+  const addProductToCart = useAddProductToCart();
+  const submitReview = useSubmitReview();
 
-  const [currentData, setCurrentData] = useState<any>([]);
+  const [currentData, setCurrentData] = useState<ProductType>();
 
   useMemo(() => {
     const farmDetail = products?.find(
-      (product: any) => Number(product.product_id) === Number(id)
+      (product: ProductType) => Number(product.product_id) === Number(id)
     );
     setCurrentData(farmDetail);
 
@@ -49,12 +52,20 @@ const ProductD = ({ id }: { id: string }) => {
     }
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async(e: FormEvent) => {
     e.preventDefault();
+    try {
+      await submitReview(Number(id), review);
+      toast.dismiss();
+      toast.success("Review Submitted Successfully");
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Error submitting review. Please try again.");
+      console.error(err);
+    }
   };
 
-  const handleAddToCart = async () => {
-    toast.loading("Adding item to cart");
+  const handleAddToCart = async() =>{
     try {
       await addProductToCart(Number(id))
       toast.dismiss();
@@ -93,7 +104,7 @@ const ProductD = ({ id }: { id: string }) => {
             <p className="text-gray-600">
               {currentData && currentData.product_price && (
                 <span>
-                  {formatEther(currentData.product_price)}{" "}
+                  {formatEther(BigInt(currentData.product_price))}{" "}
                   <span className="font-semibold">ETH</span>
                 </span>
               )}
@@ -148,7 +159,7 @@ const ProductD = ({ id }: { id: string }) => {
         </div>
 
         <section className="w-full flex flex-col gap-4">
-          {reviews?.map((review: any, index: number) => (
+          {reviews?.map((review:ReviewType, index:number) => (
             <div
               key={index}
               className="w-full flex md:flex-row flex-col justify-start items-start md:gap-6 gap-3 rounded bg-gray-50 p-4"
