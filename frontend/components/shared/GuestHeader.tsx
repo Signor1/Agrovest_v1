@@ -7,9 +7,7 @@ import React, { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { navLinks } from "@/utils/navLinks"
 import logo from "@/public/logo-white.png"
-import { useWalletInfo, useWeb3Modal } from "@web3modal/wagmi/react"
-import { useAccount } from "wagmi"
-import { WalletConnected } from "./WalletConnected"
+
 
 const GuestHeader = () => {
     const [showMobileNav, setShowMobileNav] = useState(false)
@@ -24,16 +22,6 @@ const GuestHeader = () => {
         }
     })
 
-    const { open } = useWeb3Modal()
-    const { address, isConnected } = useAccount()
-    const { walletInfo } = useWalletInfo()
-
-
-    const walletConnect = () => {
-        if (!isConnected) {
-            open()
-        }
-    }
 
     return (
         <header className="w-full overflow-hidden">
@@ -50,7 +38,7 @@ const GuestHeader = () => {
                     </div>
 
                     <div className="flex items-center justify-end gap-3">
-                        <button
+                        {/* <button
                             type="button"
                             onClick={walletConnect}
                             className={`md:px-8 px-6 py-2.5 font-medium text-sm rounded-[10px] bg-lightgreen text-darkgreen`}
@@ -59,7 +47,9 @@ const GuestHeader = () => {
                                 isConnected ? <WalletConnected address={address} icon={walletInfo?.icon} />
                                     : <span>Connect Wallet</span>
                             }
-                        </button>
+                        </button> */}
+
+                        <appkit-button />
 
 
                         <div className="md:hidden">
